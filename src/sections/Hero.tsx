@@ -41,13 +41,16 @@ export default function Hero() {
             </motion.div>
 
             {/* gradiente suave para que el texto se despegue de la foto */}
-            <div className="absolute inset-0 bg-linear-to-r from-primary/60 via-primary/25 via-35% to-transparent to-65%" />
+            {/* movil: de abajo hacia arriba, porque ahi esta el texto */}
+            <div className="absolute inset-0 bg-linear-to-t from-primary/70 via-primary/30 via-35% to-transparent to-65% md:hidden" />
+            {/* desktop: de izquierda a derecha */}
+            <div className="absolute inset-0 hidden bg-linear-to-r from-primary/50 via-primary/20 via-35% to-transparent to-60% md:block" />
 
             <div className="relative z-10 flex h-full items-end">
                 <div className="mx-auto w-full max-w-7xl px-6 pt-24 pb-8 lg:px-10 lg:pb-12">
                     <div className="max-w-2xl">
                         <motion.div {...drop(0.4)} className="w-fit">
-                            <p className="font-body text-[9px] uppercase tracking-[0.22em] text-accent lg:text-xs lg:tracking-[0.35em]">
+                            <p className="font-body text-[9px] font-semibold uppercase tracking-[0.22em] text-accent lg:text-xs lg:font-light lg:tracking-[0.35em]">
                                 Diseño y construcción en Chihuahua
                             </p>
                             <span className="mt-2 block h-0.5 w-full bg-secondary lg:w-96" />
@@ -85,7 +88,7 @@ export default function Hero() {
 
                         <motion.p
                             {...drop(1.15)}
-                            className="mt-4 max-w-md font-body text-base font-normal leading-relaxed text-accent/90 lg:text-lg"
+                            className="mt-4 hidden max-w-md font-body text-base font-normal leading-relaxed text-accent/90 md:block lg:text-lg"
                         >
                             Construimos tu casa en tu terreno, a partir de tu
                             presupuesto y con acompañamiento en cada etapa.
