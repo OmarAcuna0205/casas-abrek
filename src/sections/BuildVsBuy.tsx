@@ -1,5 +1,6 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { motion } from "motion/react";
 import comprarImage from "../../public/comprar.png";
@@ -17,6 +18,22 @@ const rise = (delay: number) => ({
     hidden: { opacity: 0, y: 16 },
     show: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease } },
 });
+
+// en desktop los paneles van lado a lado y "Construir" entra despues de "Comprar";
+// en movil van apilados, cada uno se anima al llegar a el y no necesita esperar
+const desktopQuery = "(min-width: 768px)";
+
+function useIsDesktop() {
+    return useSyncExternalStore(
+        (onChange) => {
+            const query = window.matchMedia(desktopQuery);
+            query.addEventListener("change", onChange);
+            return () => query.removeEventListener("change", onChange);
+        },
+        () => window.matchMedia(desktopQuery).matches,
+        () => false
+    );
+}
 
 const comprar = [
     "Pagas un precio cerrado",
@@ -53,8 +70,8 @@ function Panel({
         <motion.div
             initial="hidden"
             whileInView="show"
-            viewport={{ once: true, amount: 0.3 }}
-            className={`group relative overflow-hidden py-20 lg:py-15 ${className}`}
+            viewport={{ once: true, amount: 0.15 }}
+            className={`group relative overflow-hidden py-12 lg:py-15 ${className}`}
         >
             <motion.div
                 variants={{
@@ -87,24 +104,24 @@ function Panel({
                     placeholder="blur"
                     draggable={false}
                     className={`pointer-events-none select-none object-cover transition-transform duration-1000 ease-out ${featured
-                        ? "group-hover:scale-105"
-                        : "scale-105 group-hover:scale-100"
+                        ? "scale-105 md:scale-100 md:group-hover:scale-105"
+                        : "md:scale-105 md:group-hover:scale-100"
                         }`}
                 />
             </motion.div>
 
-            {/* hover: construir se ilumina, comprar se apaga */}
+            {/* hover: construir se ilumina, comprar se apaga. En movil no hay hover, asi que se queda fijo en ese estado */}
             <div
                 className={`absolute inset-0 transition-colors duration-700 ${featured
-                    ? "bg-primary/80 group-hover:bg-primary/65"
-                    : "bg-black/70 group-hover:bg-black/80"
+                    ? "bg-primary/65 md:bg-primary/80 md:group-hover:bg-primary/65"
+                    : "bg-black/80 md:bg-black/70 md:group-hover:bg-black/80"
                     }`}
             />
 
             <div className="relative max-w-md">
                 <motion.h3
                     variants={rise(delay + 0.2)}
-                    className={`font-display text-lg font-semibold uppercase tracking-wide lg:text-xl ${featured ? "text-secondary" : "text-accent/70"
+                    className={`font-display text-lg font-semibold uppercase tracking-wide lg:text-xl ${featured ? "text-secondary" : "text-accent"
                         }`}
                 >
                     {title}
@@ -130,16 +147,13 @@ function Panel({
                         >
                             <span
                                 aria-hidden="true"
-                                className={`font-display text-xs font-semibold ${featured ? "text-secondary" : "text-accent/50"
+                                className={`font-display text-xs font-semibold ${featured ? "text-secondary" : "text-accent"
                                     }`}
                             >
                                 0{index + 1}
                             </span>
                             <span
-                                className={`font-body ${featured
-                                    ? "text-base font-medium text-accent"
-                                    : "text-sm text-accent/60"
-                                    }`}
+                                className="font-body text-sm font-medium text-accent lg:text-base"
                             >
                                 {item}
                             </span>
@@ -152,6 +166,8 @@ function Panel({
 }
 
 export default function BuildVsBuy() {
+    const isDesktop = useIsDesktop();
+
     return (
         <section
             id="construir"
@@ -207,7 +223,7 @@ export default function BuildVsBuy() {
                     items={construir}
                     image={construirImage}
                     featured
-                    delay={0.25}
+                    delay={isDesktop ? 0.25 : 0}
                     className="border-t border-secondary px-6 sm:px-10 md:border-t-0 md:border-l lg:px-16"
                 />
             </div>

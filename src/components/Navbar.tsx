@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { ListIcon, XIcon } from "@phosphor-icons/react";
 import { quoteLink } from "@/lib/whatsapp";
@@ -42,8 +43,42 @@ function PreventaBadge({ small = false }: { small?: boolean }) {
 }
 
 export default function Navbar() {
+    const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+
+    // Si la seccion esta en la pagina actual, hacemos el scroll nosotros:
+    // Next no vuelve a bajar si el hash ya es el mismo, y con el menu abierto
+    // el scroll de la pagina esta bloqueado. Si no, Next navega normal.
+    const goTo = (
+        event: React.MouseEvent<HTMLAnchorElement>,
+        href: string
+    ) => {
+        setMenuOpen(false);
+        document.documentElement.style.overflow = "";
+
+        const [path, hash] = href.split("#");
+
+        if ((path || "/") !== pathname) {
+            return;
+        }
+
+        const target = hash ? document.getElementById(hash) : null;
+
+        if (hash && !target) {
+            return;
+        }
+
+        event.preventDefault();
+
+        if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+            history.replaceState(null, "", `#${hash}`);
+        } else {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            history.replaceState(null, "", path || "/");
+        }
+    };
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 40);
@@ -70,7 +105,11 @@ export default function Navbar() {
                 }`}
         >
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10 lg:py-4">
-                <Link href="/" aria-label="Casas Abrek, ir al inicio">
+                <Link
+                    href="/"
+                    onClick={(event) => goTo(event, "/")}
+                    aria-label="Casas Abrek, ir al inicio"
+                >
                     <motion.span
                         whileHover={{ y: -4 }}
                         transition={{
@@ -108,6 +147,7 @@ export default function Navbar() {
                             <li key={link.href}>
                                 <Link
                                     href={link.href}
+                                    onClick={(event) => goTo(event, link.href)}
                                     className="group flex items-center gap-1.5 font-body text-xs uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-secondary"
                                 >
                                     {link.label}
@@ -192,7 +232,7 @@ export default function Navbar() {
                         >
                             <Link
                                 href={link.href}
-                                onClick={() => setMenuOpen(false)}
+                                onClick={(event) => goTo(event, link.href)}
                                 className="group inline-flex items-center gap-1.5 font-body text-sm uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-secondary"
                             >
                                 {link.label}
