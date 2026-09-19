@@ -8,12 +8,38 @@ import { ListIcon, XIcon } from "@phosphor-icons/react";
 import { quoteLink } from "@/lib/whatsapp";
 
 const links = [
-    { label: "Inicio", href: "/#inicio" },
     { label: "Por qué construir", href: "/#construir" },
     { label: "Proyectos", href: "/#proyectos" },
+    { label: "Casa Sinaí", href: "/casa-sinai", badge: true },
     { label: "Nosotros", href: "/#nosotros" },
     { label: "Contacto", href: "/#contacto" },
 ];
+
+// estrella de 12 picos, como sticker de oferta
+const starburst = `polygon(${Array.from({ length: 24 }, (_, i) => {
+    const angle = (Math.PI * i) / 12;
+    const radius = i % 2 === 0 ? 50 : 40;
+    const x = (50 + radius * Math.cos(angle)).toFixed(1);
+    const y = (50 + radius * Math.sin(angle)).toFixed(1);
+    return `${x}% ${y}%`;
+}).join(", ")})`;
+
+// va dentro del link de Casa Sinai; crece cuando se hace hover sobre el link
+function PreventaBadge({ small = false }: { small?: boolean }) {
+    const size = small
+        ? "-my-2.5 h-12 w-12 text-[6px]"
+        : "-my-3 h-14 w-14 text-[7px]";
+
+    return (
+        <span
+            aria-hidden="true"
+            style={{ clipPath: starburst }}
+            className={`${size} flex shrink-0 -rotate-12 items-center justify-center bg-secondary pt-px font-body font-bold uppercase leading-none tracking-normal text-primary backface-hidden transform-gpu transition-transform duration-300 will-change-transform group-hover:scale-105`}
+        >
+            Preventa
+        </span>
+    );
+}
 
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
@@ -59,7 +85,7 @@ export default function Navbar() {
                             alt="Casas Abrek — Diseño y construcción"
                             width={1606}
                             height={589}
-                            priority
+                            loading="eager"
                             className={`h-auto w-28 transition-opacity duration-500 lg:w-36 ${scrolled ? "opacity-0" : "opacity-100"
                                 }`}
                         />
@@ -69,7 +95,7 @@ export default function Navbar() {
                             aria-hidden="true"
                             width={1606}
                             height={589}
-                            priority
+                            loading="eager"
                             className={`absolute inset-0 h-auto w-28 transition-opacity duration-500 lg:w-36 ${scrolled ? "opacity-100" : "opacity-0"
                                 }`}
                         />
@@ -82,9 +108,17 @@ export default function Navbar() {
                             <li key={link.href}>
                                 <Link
                                     href={link.href}
-                                    className="font-body text-xs uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-secondary"
+                                    className="group flex items-center gap-1.5 font-body text-xs uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-secondary"
                                 >
                                     {link.label}
+                                    {link.badge && (
+                                        <>
+                                            <span className="sr-only">
+                                                (preventa)
+                                            </span>
+                                            <PreventaBadge />
+                                        </>
+                                    )}
                                 </Link>
                             </li>
                         ))}
@@ -159,9 +193,17 @@ export default function Navbar() {
                             <Link
                                 href={link.href}
                                 onClick={() => setMenuOpen(false)}
-                                className="font-body text-sm uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-secondary"
+                                className="group inline-flex items-center gap-1.5 font-body text-sm uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-secondary"
                             >
                                 {link.label}
+                                {link.badge && (
+                                    <>
+                                        <span className="sr-only">
+                                            (preventa)
+                                        </span>
+                                        <PreventaBadge small />
+                                    </>
+                                )}
                             </Link>
                         </motion.li>
                     ))}

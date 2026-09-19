@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { ArrowRightIcon, WhatsappLogoIcon } from "@phosphor-icons/react";
+import { WhatsappLogoIcon } from "@phosphor-icons/react";
 import heroImage from "../../public/hero.png";
 import { buildLink } from "@/lib/whatsapp";
 
@@ -33,7 +33,7 @@ export default function Hero() {
                     alt="Casa residencial construida por Casas Abrek en Chihuahua"
                     fill
                     sizes="100vw"
-                    priority
+                    preload
                     placeholder="blur"
                     draggable={false}
                     className="pointer-events-none select-none object-cover object-[70%_30%] md:object-[center_30%]"
@@ -90,9 +90,9 @@ export default function Hero() {
                             {...drop(1.15)}
                             className="mt-4 hidden max-w-md font-body text-base font-normal leading-relaxed text-accent/90 md:block lg:text-lg"
                         >
-                            Construimos tu casa en tu terreno, a partir de tu
-                            presupuesto y con acompañamiento en cada etapa.
-                            Conoce nuestros proyectos en Chihuahua.
+                            Construimos tu casa en tu terreno, con método,
+                            supervisión y transparencia. ¿Aún no tienes terreno?
+                            Conoce nuestras casas en preventa.
                         </motion.p>
 
                         <motion.div
@@ -105,14 +105,21 @@ export default function Hero() {
                                 className="group mt-6 inline-flex items-center gap-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-accent transition-colors duration-300 hover:text-secondary lg:text-base"
                             >
                                 Ver proyectos
-                                <span className="flex items-center transition-transform duration-300 group-hover:translate-x-2">
-                                    <span className="h-px w-12 bg-current lg:w-16" />
-                                    <ArrowRightIcon
-                                        size={18}
-                                        weight="light"
-                                        className="-ml-2.5"
+                                <svg
+                                    viewBox="0 0 64 12"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    aria-hidden="true"
+                                    className="h-3 w-12 transition-transform duration-300 group-hover:translate-x-2 lg:w-16"
+                                >
+                                    <path
+                                        d="M1 6 H62 M56 1 L62 6 L56 11"
+                                        vectorEffect="non-scaling-stroke"
                                     />
-                                </span>
+                                </svg>
                             </Link>
                         </motion.div>
                     </div>

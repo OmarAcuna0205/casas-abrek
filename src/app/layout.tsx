@@ -15,7 +15,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Casas Abrek | Diseño y construcción de casas en Chihuahua",
   description:
-    "Construimos tu casa en tu terreno, a partir de tu presupuesto y con acompañamiento en cada etapa. Conoce nuestros proyectos en Chihuahua.",
+    "Construimos tu casa en tu terreno y desarrollamos casas de una planta frente a parque en Chihuahua, con método, supervisión y transparencia.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
