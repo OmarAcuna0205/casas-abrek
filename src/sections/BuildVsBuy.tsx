@@ -8,12 +8,6 @@ import construirImage from "../../public/construir.png";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
-// cae desde arriba, como en el hero
-const drop = (delay: number) => ({
-    hidden: { opacity: 0, y: -30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.9, delay, ease } },
-});
-
 const rise = (delay: number) => ({
     hidden: { opacity: 0, y: 16 },
     show: { opacity: 1, y: 0, transition: { duration: 0.7, delay, ease } },
@@ -177,23 +171,16 @@ export default function BuildVsBuy() {
             <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-16 lg:px-10 lg:py-16">
                 <motion.h2
                     id="construir-titulo"
-                    initial="hidden"
-                    whileInView="show"
+                    initial={{ opacity: 0, y: -30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, amount: 0.6 }}
+                    transition={{ duration: 0.9, ease }}
                     className="shrink-0 font-display text-4xl font-bold leading-tight text-primary sm:text-5xl xl:text-6xl"
                 >
-                    <motion.span variants={drop(0)} className="inline-block">
-                        ¿Comprar o
-                    </motion.span>{" "}
-                    <motion.span
-                        variants={drop(0.2)}
-                        className="inline-block text-secondary"
-                    >
-                        Construir
-                    </motion.span>
-                    <motion.span variants={drop(0.35)} className="inline-block">
-                        ?
-                    </motion.span>
+                    <span className="text-black">¿</span>Comprar{" "}
+                    <span className="text-black">o</span>{" "}
+                    <span className="text-secondary">Construir</span>
+                    <span className="text-black">?</span>
                 </motion.h2>
 
                 <motion.p

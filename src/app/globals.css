@@ -20,4 +20,7 @@ body {
   color: var(--color-primary);
   font-family: var(--font-body);
   font-weight: 300;
+  /* las animaciones que entran de los lados no deben hacer scroll horizontal.
+     clip en vez de hidden para no romper position: sticky */
+  overflow-x: clip;
 }

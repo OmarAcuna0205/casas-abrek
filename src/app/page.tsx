@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/sections/Hero";
 import BuildVsBuy from "@/sections/BuildVsBuy";
+import Videos from "@/sections/Videos";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <main>
         <Hero />
         <BuildVsBuy />
+        <Videos />
       </main>
     </>
   );
