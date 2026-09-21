@@ -166,7 +166,7 @@ export default function BuildVsBuy() {
         <section
             id="construir"
             aria-labelledby="construir-titulo"
-            className="scroll-mt-20 bg-accent"
+            className="scroll-mt-20 overflow-x-clip bg-accent"
         >
             <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-16 lg:px-10 lg:py-16">
                 <motion.h2
@@ -184,7 +184,7 @@ export default function BuildVsBuy() {
                 </motion.h2>
 
                 <motion.p
-                    initial={{ opacity: 0, x: 30 }}
+                    initial={{ opacity: 0, x: 16 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, amount: 0.6 }}
                     transition={{ duration: 0.9, delay: 0.4, ease }}

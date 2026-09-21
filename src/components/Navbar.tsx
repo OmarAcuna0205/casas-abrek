@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { ListIcon, XIcon } from "@phosphor-icons/react";
+import StarBadge from "@/components/StarBadge";
 import { quoteLink } from "@/lib/whatsapp";
 
 const links = [
@@ -16,29 +17,17 @@ const links = [
     { label: "Contacto", href: "/#contacto" },
 ];
 
-// estrella de 12 picos, como sticker de oferta
-const starburst = `polygon(${Array.from({ length: 24 }, (_, i) => {
-    const angle = (Math.PI * i) / 12;
-    const radius = i % 2 === 0 ? 50 : 40;
-    const x = (50 + radius * Math.cos(angle)).toFixed(1);
-    const y = (50 + radius * Math.sin(angle)).toFixed(1);
-    return `${x}% ${y}%`;
-}).join(", ")})`;
-
 // va dentro del link de Casa Sinai; crece cuando se hace hover sobre el link
 function PreventaBadge({ small = false }: { small?: boolean }) {
-    const size = small
-        ? "-my-2.5 h-12 w-12 text-[6px]"
-        : "-my-3 h-14 w-14 text-[7px]";
-
     return (
-        <span
-            aria-hidden="true"
-            style={{ clipPath: starburst }}
-            className={`${size} flex shrink-0 -rotate-12 items-center justify-center bg-secondary pt-px font-body font-bold uppercase leading-none tracking-normal text-primary backface-hidden transform-gpu transition-transform duration-300 will-change-transform group-hover:scale-105`}
-        >
-            Preventa
-        </span>
+        <StarBadge
+            label="Preventa"
+            hoverScale
+            className={`relative ${small
+                ? "-my-2.5 h-12 w-12 text-[6px]"
+                : "-my-3 h-14 w-14 text-[7px]"
+                }`}
+        />
     );
 }
 
@@ -46,6 +35,10 @@ export default function Navbar() {
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+
+    // en el inicio la navbar empieza transparente sobre el hero; en las demas
+    // paginas siempre lleva fondo, si no el texto crema se pierde
+    const solid = scrolled || pathname !== "/";
 
     // Si la seccion esta en la pagina actual, hacemos el scroll nosotros:
     // Next no vuelve a bajar si el hash ya es el mismo, y con el menu abierto
@@ -101,7 +94,7 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 z-50 w-full transition-colors duration-500 ${scrolled ? "bg-primary" : "bg-transparent"
+            className={`fixed top-0 z-50 w-full transition-colors duration-500 ${solid ? "bg-primary" : "bg-transparent"
                 }`}
         >
             <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-10 lg:py-4">
@@ -125,7 +118,7 @@ export default function Navbar() {
                             width={1606}
                             height={589}
                             loading="eager"
-                            className={`h-auto w-28 transition-opacity duration-500 lg:w-36 ${scrolled ? "opacity-0" : "opacity-100"
+                            className={`h-auto w-28 transition-opacity duration-500 lg:w-36 ${solid ? "opacity-0" : "opacity-100"
                                 }`}
                         />
                         <Image
@@ -135,7 +128,7 @@ export default function Navbar() {
                             width={1606}
                             height={589}
                             loading="eager"
-                            className={`absolute inset-0 h-auto w-28 transition-opacity duration-500 lg:w-36 ${scrolled ? "opacity-100" : "opacity-0"
+                            className={`absolute inset-0 h-auto w-28 transition-opacity duration-500 lg:w-36 ${solid ? "opacity-100" : "opacity-0"
                                 }`}
                         />
                     </motion.span>
@@ -190,10 +183,13 @@ export default function Navbar() {
                 />
             )}
 
-            <div
-                className={`fixed top-0 right-0 bottom-0 z-50 flex w-72 flex-col bg-primary px-8 py-20 transition-transform duration-500 ease-in-out md:hidden ${menuOpen ? "translate-x-0" : "translate-x-full"
-                    }`}
-            >
+            {/* el contenedor recorta el drawer cuando esta cerrado; si no, al estar
+                fuera de pantalla la pagina se puede deslizar a los lados */}
+            <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden md:hidden">
+                <div
+                    className={`pointer-events-auto absolute top-0 right-0 bottom-0 flex w-72 flex-col bg-primary px-8 py-20 transition-transform duration-500 ease-in-out ${menuOpen ? "translate-x-0" : "translate-x-full"
+                        }`}
+                >
                 <button
                     onClick={() => setMenuOpen(false)}
                     aria-label="Cerrar menú"
@@ -258,6 +254,7 @@ export default function Navbar() {
                 >
                     Cotizar
                 </a>
+                </div>
             </div>
         </header>
     );

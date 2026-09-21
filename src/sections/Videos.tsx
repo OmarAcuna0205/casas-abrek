@@ -10,7 +10,7 @@ export default function Videos() {
         <section
             id="videos"
             aria-labelledby="videos-titulo"
-            className="scroll-mt-20 bg-accent"
+            className="scroll-mt-20 overflow-x-clip bg-accent"
         >
             <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
@@ -23,18 +23,17 @@ export default function Videos() {
                         className="shrink-0 font-display text-3xl font-bold leading-tight text-black sm:text-4xl lg:whitespace-nowrap xl:text-5xl"
                     >
                         Lo que nadie te dice sobre{" "}
-                        <span className="text-secondary">construir</span>
+                        <span className="text-secondary">Construir</span>
                     </motion.h2>
 
                     <motion.p
-                        initial={{ opacity: 0, x: 30 }}
+                        initial={{ opacity: 0, x: 16 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true, amount: 0.6 }}
                         transition={{ duration: 0.9, delay: 0.4, ease }}
-                        className="max-w-sm text-balance font-body text-sm font-medium leading-relaxed text-primary/70 lg:text-base"
+                        className="font-body text-sm font-medium leading-relaxed text-primary/70 lg:whitespace-nowrap lg:text-base"
                     >
-                        Tres videos cortos para resolver las dudas más comunes
-                        antes de decidir.
+                        Las dudas más comunes, resueltas antes de decidir.
                     </motion.p>
                 </div>
 
@@ -52,7 +51,23 @@ export default function Videos() {
                             }}
                             className="group"
                         >
-                            <div className="relative aspect-9/16 overflow-hidden bg-primary">
+                            <h3 className="font-display text-lg font-bold text-primary transition-colors duration-300 group-hover:text-secondary">
+                                <a
+                                    href={reelUrl(video.id)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {video.title}
+                                </a>
+                            </h3>
+
+                            <p className="mt-1 mb-4 max-w-xs font-body text-sm leading-relaxed text-primary/60">
+                                {video.description}
+                            </p>
+
+                            {/* el embed de Instagram no es 9:16: encima del video
+                                lleva el encabezado y debajo likes y comentarios */}
+                            <div className="relative aspect-9/17 overflow-hidden bg-primary">
                                 <iframe
                                     src={reelEmbedUrl(video.id)}
                                     title={video.title}
@@ -63,20 +78,6 @@ export default function Videos() {
                                     className="absolute inset-0 h-full w-full"
                                 />
                             </div>
-
-                            <h3 className="mt-5 font-display text-lg font-bold text-primary transition-colors duration-300 group-hover:text-secondary">
-                                <a
-                                    href={reelUrl(video.id)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {video.title}
-                                </a>
-                            </h3>
-
-                            <p className="mt-1 max-w-xs font-body text-sm leading-relaxed text-primary/60">
-                                {video.description}
-                            </p>
                         </motion.li>
                     ))}
                 </ul>
