@@ -74,7 +74,7 @@ export default function ProjectGallery({ images }: { images: GalleryImage[] }) {
     return (
         <ul
             ref={listRef}
-            className="mt-8 flex flex-col gap-5 px-6 lg:mt-10 lg:flex-row lg:gap-6 lg:overflow-x-auto lg:overflow-y-hidden lg:overscroll-x-contain lg:px-10 lg:pb-5 lg:pr-10 lg:scroll-smooth lg:[scrollbar-width:thin]"
+            className="mt-8 flex flex-col gap-5 px-6 lg:mt-10 lg:flex-row lg:gap-6 lg:overflow-x-auto lg:overflow-y-hidden lg:overscroll-x-contain lg:px-10 lg:pb-5 lg:pr-10 lg:scroll-smooth lg:scrollbar-thin"
         >
             {images.map((item, index) => (
                 <GalleryCard

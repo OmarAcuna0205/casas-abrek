@@ -44,8 +44,8 @@ export default function ProjectPage({ project }: { project: ProjectPageData }) {
     return (
         <>
             <Navbar />
-            <main className="overflow-x-clip bg-accent pt-[72px] lg:pt-[76px]">
-                <section aria-labelledby="proyecto-titulo" className="relative h-[calc(100dvh-72px)] min-h-[36rem] lg:h-[calc(100dvh-76px)]">
+            <main className="overflow-x-clip bg-accent pt-18 lg:pt-19">
+                <section aria-labelledby="proyecto-titulo" className="relative h-[calc(100dvh-72px)] min-h-144 lg:h-[calc(100dvh-76px)]">
                     <Image
                         src={hero.image}
                         alt={hero.alt}
