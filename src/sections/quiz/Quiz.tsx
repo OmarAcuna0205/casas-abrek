@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
@@ -75,6 +75,39 @@ const inputClass =
 const smallLabel =
     "font-body text-[10px] font-semibold uppercase tracking-[0.25em]";
 
+// salida al sitio: mucha gente llega aqui directo desde Instagram. Logo, flecha y
+// texto son un solo link, asi funciona igual si picas el logo o las palabras
+function BackToSite({ tone }: { tone: "light" | "dark" }) {
+    const light = tone === "light";
+
+    return (
+        <Link
+            href="/"
+            className={`group flex w-fit flex-wrap items-center gap-x-5 gap-y-2 ${light ? "text-accent/80" : "text-primary/70"}`}
+        >
+            <Image
+                src={light ? "/logo-claro.png" : "/logo.png"}
+                alt="Casas Abrek"
+                width={1606}
+                height={589}
+                sizes="(min-width: 1024px) 112px, 88px"
+                loading="eager"
+                className="h-auto w-22 lg:w-28"
+            />
+            <span
+                className={`flex items-center gap-2 transition-colors duration-300 group-hover:text-secondary ${smallLabel}`}
+            >
+                <ArrowLeftIcon
+                    size={14}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:-translate-x-1"
+                />
+                Volver al sitio web
+            </span>
+        </Link>
+    );
+}
+
 function SinaiPanel() {
     return (
         <motion.aside
@@ -83,7 +116,9 @@ function SinaiPanel() {
             transition={{ duration: 0.9, ease }}
             className="hidden min-h-0 flex-col px-8 py-10 text-accent lg:flex xl:px-10"
         >
-            <p className="font-display text-5xl font-bold leading-none">
+            <BackToSite tone="light" />
+
+            <p className="mt-10 font-display text-5xl font-bold leading-none">
                 Casa Sinaí
             </p>
 
@@ -206,11 +241,14 @@ export default function Quiz() {
         }
     };
 
-    const focusOnMount = (element: HTMLHeadingElement | null) => {
+    // useCallback: con una funcion nueva en cada render, React volvia a llamar el ref
+    // con cada letra que se escribia y el foco se iba del campo de nombre al titulo.
+    // Estable, solo corre cuando el titulo del paso aparece
+    const focusOnMount = useCallback((element: HTMLHeadingElement | null) => {
         if (element && moved.current) {
             element.focus({ preventScroll: true });
         }
-    };
+    }, []);
 
     const question = questions[step];
     const thanks = step === THANKS_STEP;
@@ -223,6 +261,11 @@ export default function Quiz() {
                 {/* si la pantalla es baja, se hace scroll dentro del panel y no en la pagina */}
                 <section className="flex min-h-0 flex-col overflow-y-auto bg-accent px-5 py-7 sm:px-8 lg:px-12 lg:py-10 xl:px-16">
                     <div className="mx-auto w-full max-w-3xl">
+                        {/* en movil no hay panel de Casa Sinai: la salida va aqui */}
+                        <div className="mb-6 lg:hidden">
+                            <BackToSite tone="dark" />
+                        </div>
+
                         <AnimatePresence key={`encabezado-${restored}`} mode="wait" initial={false}>
                             <motion.div
                                 key={thanks ? "gracias" : "preguntas"}
