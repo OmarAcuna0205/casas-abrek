@@ -101,16 +101,19 @@ export default function About() {
                 <div className="mt-12 lg:mt-16">
                     <Label>Nuestro equipo</Label>
 
-                    {/* las dos fotos aparecen juntas */}
-                    <motion.ul
-                        initial={{ opacity: 0, scale: 0.96 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true, amount: 0.2 }}
-                        transition={{ duration: 1.1, delay: 0.25, ease }}
-                        className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-6"
-                    >
+                    {/* cada foto se anima al llegar a ella: en desktop van lado a
+                        lado y aparecen juntas, en movil van apiladas y entra una
+                        despues de otra. transform y no scale para que vaya por GPU */}
+                    <ul className="mx-auto mt-6 grid max-w-2xl grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-6">
                         {team.map((member) => (
-                            <li key={member.name} className="group">
+                            <motion.li
+                                key={member.name}
+                                initial={{ opacity: 0, transform: "scale(0.96)" }}
+                                whileInView={{ opacity: 1, transform: "scale(1)" }}
+                                viewport={{ once: true, amount: 0.2 }}
+                                transition={{ duration: 1.1, delay: 0.25, ease }}
+                                className="group"
+                            >
                                 <div className="relative aspect-3/4 overflow-hidden bg-primary/5">
                                     <Image
                                         src={member.image}
@@ -129,9 +132,9 @@ export default function About() {
                                 <p className="font-display text-sm font-semibold uppercase tracking-widest text-secondary">
                                     {member.role}
                                 </p>
-                            </li>
+                            </motion.li>
                         ))}
-                    </motion.ul>
+                    </ul>
                 </div>
 
                 <div className="mt-12 lg:mt-16">
