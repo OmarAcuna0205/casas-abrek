@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { motion } from "motion/react";
 import {
     EnvelopeSimpleIcon,
@@ -14,9 +15,6 @@ import { quoteLink } from "@/lib/whatsapp";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 
 const ease = [0.25, 1, 0.35, 1] as const;
-
-// cuando el envio este conectado, cambiar a true y el boton se habilita
-const FORM_ENABLED = false;
 
 const fields = [
     {
@@ -42,7 +40,7 @@ const fields = [
     },
 ] as const;
 
-const MENSAJE_MAX = 86;
+const MENSAJE_MAX = 200;
 
 type FieldName = (typeof fields)[number]["name"] | "mensaje";
 
@@ -85,14 +83,17 @@ export default function Contact() {
         ok: boolean;
         text: string;
     } | null>(null);
+    const [sending, setSending] = useState(false);
 
     const update = (name: FieldName, value: string) => {
         setValues((current) => ({ ...current, [name]: value }));
         setInvalid((current) => current.filter((field) => field !== name));
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        // se lee antes del await: despues React ya no tiene el formulario en el evento
+        const form = event.currentTarget;
 
         const empty = (Object.keys(values) as FieldName[]).filter(
             (name) => !values[name].trim()
@@ -104,9 +105,54 @@ export default function Contact() {
             return;
         }
 
-        // TODO: conectar el envio (API route, Web3Forms...) antes de habilitar
-        setValues(emptyValues);
-        setFeedback({ ok: true, text: "¡Gracias! Te contactamos pronto." });
+        // con un correo mal escrito Josué no tendria a quien responderle
+        if (!/^\S+@\S+\.\S+$/.test(values.correo.trim())) {
+            setInvalid(["correo"]);
+            setFeedback({ ok: false, text: "Revisa tu correo." });
+            return;
+        }
+
+        setSending(true);
+        setFeedback(null);
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    access_key: site.web3formsKey,
+                    subject: `Nuevo mensaje de ${values.nombre.trim()} desde el sitio`,
+                    from_name: "Sitio web de Casas Abrek",
+                    // al darle "Responder" en el correo, le contesta al cliente
+                    replyto: values.correo.trim(),
+                    // los nombres de los campos son los que Josué ve en el correo
+                    Nombre: values.nombre.trim(),
+                    Correo: values.correo.trim(),
+                    Teléfono: values.telefono.trim(),
+                    Mensaje: values.mensaje.trim(),
+                    // casilla oculta: si viene marcada es un bot y Web3Forms lo descarta
+                    botcheck: new FormData(form).get("botcheck") === "on",
+                }),
+            });
+            const result: { success: boolean } = await response.json();
+
+            if (!result.success) {
+                throw new Error("Web3Forms no acepto el mensaje");
+            }
+
+            setValues(emptyValues);
+            setFeedback({ ok: true, text: "¡Gracias! Te contactamos pronto." });
+        } catch {
+            setFeedback({
+                ok: false,
+                text: "No se pudo enviar. Intenta de nuevo o escríbenos por WhatsApp.",
+            });
+        } finally {
+            setSending(false);
+        }
     };
 
     return (
@@ -150,6 +196,16 @@ export default function Contact() {
                         noValidate
                         className="flex flex-col gap-6 border border-primary/15 bg-primary/2 p-6 md:p-8 lg:col-span-2"
                     >
+                        {/* trampa para bots: nadie la ve ni la llena, un bot si */}
+                        <input
+                            type="checkbox"
+                            name="botcheck"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            className="hidden"
+                        />
+
                         {fields.map((field) => (
                             <div key={field.name}>
                                 <label htmlFor={field.name} className="sr-only">
@@ -197,12 +253,26 @@ export default function Contact() {
                         <div className="flex flex-col items-center gap-3 text-center">
                             <button
                                 type="submit"
-                                disabled={!FORM_ENABLED}
+                                disabled={sending}
                                 className="inline-flex w-fit items-center gap-3 border border-primary px-8 py-3 font-body text-xs uppercase tracking-[0.2em] text-primary transition-colors duration-300 hover:border-secondary hover:bg-secondary disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-primary disabled:hover:bg-transparent"
                             >
-                                {FORM_ENABLED ? "Enviar" : "En construcción"}
+                                {sending ? "Enviando…" : "Enviar"}
                                 <EnvelopeSimpleIcon size={16} weight="light" />
                             </button>
+
+                            {/* el aviso tiene que estar a la mano donde se piden los datos.
+                                Otra pestaña para no perder lo que ya escribio */}
+                            <p className="font-body text-[11px] text-primary/60">
+                                Al enviar, aceptas nuestro{" "}
+                                <Link
+                                    href="/aviso-de-privacidad"
+                                    target="_blank"
+                                    className="underline underline-offset-2 transition-colors duration-300 hover:text-secondary"
+                                >
+                                    aviso de privacidad
+                                </Link>
+                                .
+                            </p>
 
                             <div aria-live="polite">
                                 {feedback && (

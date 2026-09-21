@@ -9,8 +9,7 @@ export const metadata: Metadata = {
         "Cómo Casas Abrek usa y protege los datos personales que compartes en el sitio y por WhatsApp.",
 };
 
-// TODO: cuando tengan correo, agregarlo en "Tus derechos" junto al WhatsApp.
-// Domicilio no hay uno como tal: son de Chihuahua (lo confirmo Omar)
+// domicilio no hay uno como tal: son de Chihuahua (lo confirmo Omar)
 
 const heading = "mt-10 font-display text-xl font-bold text-primary lg:text-2xl";
 const paragraph = "mt-3 font-body text-sm leading-relaxed text-primary/80 lg:text-base";
@@ -88,6 +87,10 @@ export default function AvisoDePrivacidad() {
                         para que no lo pierdas, y se borra al cerrar la pestaña. WhatsApp es un
                         servicio de Meta y se rige por sus propias políticas de privacidad.
                     </p>
+                    <p className={paragraph}>
+                        El formulario de contacto nos llega por correo a través de Web3Forms, un
+                        servicio que solo se encarga de entregarnos tu mensaje.
+                    </p>
 
                     <h2 className={heading}>Con quién los compartimos</h2>
                     <p className={paragraph}>
@@ -108,7 +111,11 @@ export default function AvisoDePrivacidad() {
                         >
                             {site.phoneLabel}
                         </a>{" "}
-                        con tu nombre, lo que necesitas y un medio para responderte. Te
+                        o al correo{" "}
+                        <a href={`mailto:${site.email}`} className="font-semibold text-primary underline decoration-primary/30 underline-offset-4 transition-colors duration-300 hover:text-secondary hover:decoration-secondary">
+                            {site.email}
+                        </a>
+                        , con tu nombre, lo que necesitas y un medio para responderte. Te
                         contestamos en un plazo máximo de 20 días hábiles.
                     </p>
 
