@@ -24,7 +24,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Casas Abrek | Diseño y construcción de casas en Chihuahua",
   description:
-    "Construimos tu casa en tu terreno y desarrollamos casas de una planta frente a parque en Chihuahua, con método, supervisión y transparencia.",
+    "Diseño y construcción de casas en Chihuahua. Construimos tu casa en tu terreno y hoy tenemos en preventa Casa Sinaí, de una planta y frente a parque.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
