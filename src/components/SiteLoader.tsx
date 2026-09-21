@@ -99,6 +99,8 @@ export function SiteLoaderProvider({ children }: { children: ReactNode }) {
                             alt="Casas Abrek"
                             width={1606}
                             height={589}
+                            // se ve de 176-224px: sin sizes Next bajaba la version de 1920px
+                            sizes="(min-width: 1024px) 224px, 176px"
                             loading="eager"
                             className="h-auto w-44 lg:w-56"
                         />

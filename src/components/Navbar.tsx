@@ -117,6 +117,8 @@ export default function Navbar() {
                             alt="Casas Abrek — Diseño y construcción"
                             width={1606}
                             height={589}
+                            // se ve de 112-144px: sin sizes Next bajaba la version de 1920px
+                            sizes="(min-width: 1024px) 144px, 112px"
                             loading="eager"
                             className={`h-auto w-28 transition-opacity duration-500 lg:w-36 ${solid ? "opacity-0" : "opacity-100"
                                 }`}
@@ -127,6 +129,8 @@ export default function Navbar() {
                             aria-hidden="true"
                             width={1606}
                             height={589}
+                            // se ve de 112-144px: sin sizes Next bajaba la version de 1920px
+                            sizes="(min-width: 1024px) 144px, 112px"
                             loading="eager"
                             className={`absolute inset-0 h-auto w-28 transition-opacity duration-500 lg:w-36 ${solid ? "opacity-100" : "opacity-0"
                                 }`}

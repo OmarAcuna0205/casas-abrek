@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     title: "Casa Armonía | Casas Abrek",
     description:
         "Casa de dos plantas en Bosques del Valle II, Chihuahua, construida por Casas Abrek. Conoce sus espacios y cotiza la tuya.",
+    alternates: { canonical: "/casa-armonia" },
 };
 
 const armonia: ProjectPageData = {

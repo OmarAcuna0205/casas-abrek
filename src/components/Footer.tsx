@@ -65,6 +65,8 @@ export default function Footer() {
                             alt="Casas Abrek — Diseño y construcción"
                             width={1606}
                             height={589}
+                            // se ve de 192-256px: sin sizes Next bajaba la version de 1920px
+                            sizes="(min-width: 1024px) 256px, 192px"
                             className="h-auto w-48 lg:w-64"
                         />
                     </motion.div>

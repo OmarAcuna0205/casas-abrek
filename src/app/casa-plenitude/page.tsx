@@ -9,6 +9,7 @@ export const metadata: Metadata = {
     title: "Casa Plenitude | Casas Abrek",
     description:
         "Casa de una planta frente a parque en Condesa Rejón II, Chihuahua, construida por Casas Abrek. Conoce sus espacios y cotiza la tuya.",
+    alternates: { canonical: "/casa-plenitude" },
 };
 
 const plenitude: ProjectPageData = {

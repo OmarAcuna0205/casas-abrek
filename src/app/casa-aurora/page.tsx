@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     title: "Casa Aurora | Casas Abrek",
     description:
         "Casa de una planta en Monte Caleres, Chihuahua, construida por Casas Abrek. Conoce sus espacios y cotiza la tuya.",
+    alternates: { canonical: "/casa-aurora" },
 };
 
 const aurora: ProjectPageData = {

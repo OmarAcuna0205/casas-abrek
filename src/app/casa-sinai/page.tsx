@@ -9,7 +9,8 @@ import CircleCta, { quizCta } from "@/components/CircleCta";
 import ProjectGallery, { type GalleryImage } from "@/components/ProjectGallery";
 import Contact from "@/sections/Contact";
 import sinaiImage from "../../../public/sinai.jpg";
-import planoImage from "../../../public/planos.png";
+import planoImage from "../../../public/planos.jpg";
+import planoDesktopImage from "../../../public/planosDesktop.jpg";
 import renderOne from "../../../public/render1.jpg";
 import renderTwo from "../../../public/render2.jpg";
 import renderThree from "../../../public/render3.jpg";
@@ -35,8 +36,9 @@ const renders: GalleryImage[] = [
     { image: renderSix, alt: "Render nocturno de Casa Sinaí" },
 ];
 
-// alto entre ancho del plano (vertical, mas de 2)
-const planoRatio = planoImage.height / planoImage.width;
+// ancho entre alto de cada plano: el de movil es vertical y el de desktop horizontal
+const planoRatio = planoImage.width / planoImage.height;
+const planoDesktopRatio = planoDesktopImage.width / planoDesktopImage.height;
 
 const details = [
     { label: "Ubicación", value: "Rincón de las Bugambilias, Chihuahua" },
@@ -109,33 +111,52 @@ export default function CasaSinai() {
                             </p>
                         </div>
 
-                        {/* el plano es vertical: en movil va tal cual y en desktop se gira 90°
-                            para que quede horizontal. La caja toma la proporcion ya girada y el
-                            plano va centrado adentro. Las medidas salen de la imagen, asi no se
-                            descuadra si la cambian. Los calc van en variables porque Tailwind no
-                            detecta clases con calc(100%*...) */}
+                        {/* dos versiones del plano: vertical en movil y horizontal en desktop.
+                            A cada caja se le fija el ancho (sale del alto maximo y la proporcion)
+                            y el alto sale solo, asi nunca se deforma. Van en variables porque
+                            Tailwind no detecta clases con calc(...*variable). La oculta no se
+                            descarga porque es lazy */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.98 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.8, ease }}
-                            style={{
-                                "--w": planoImage.width,
-                                "--h": planoImage.height,
-                                // en desktop no pasa del alto de la pantalla (igual que los renders)
-                                "--plano-max": `calc((100dvh - 15rem) * ${planoRatio})`,
-                                // sin girar, el plano mide de alto lo que la caja de ancho
-                                "--plano-alto": `${planoRatio * 100}%`,
-                            } as React.CSSProperties}
-                            className="relative mx-auto mt-8 w-full overflow-hidden sm:max-w-md lg:mt-10 lg:aspect-[var(--h)/var(--w)] lg:max-w-(--plano-max)"
+                            className="mt-8 lg:mt-10"
                         >
-                            <div className="relative aspect-[var(--w)/var(--h)] w-full lg:absolute lg:top-1/2 lg:left-1/2 lg:h-(--plano-alto) lg:w-auto lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rotate-90">
+                            {/* movil: hasta el 70% del alto de la pantalla */}
+                            <div
+                                style={{
+                                    "--w": planoImage.width,
+                                    "--h": planoImage.height,
+                                    "--ancho": `min(100%, calc(70dvh * ${planoRatio}))`,
+                                } as React.CSSProperties}
+                                className="relative mx-auto aspect-[var(--w)/var(--h)] w-(--ancho) overflow-hidden lg:hidden"
+                            >
                                 <Image
                                     src={planoImage}
                                     alt="Plano arquitectónico de Casa Sinaí"
                                     fill
                                     placeholder="blur"
-                                    sizes="(min-width: 1024px) 600px, (min-width: 640px) 448px, 100vw"
+                                    sizes="(min-width: 1024px) 0px, 300px"
+                                    className="object-contain transition-transform duration-700 hover:scale-[1.03]"
+                                />
+                            </div>
+
+                            {/* desktop: casi del alto de la pantalla, sin pasarse del ancho */}
+                            <div
+                                style={{
+                                    "--w": planoDesktopImage.width,
+                                    "--h": planoDesktopImage.height,
+                                    "--ancho": `min(100%, calc((100dvh - 8rem) * ${planoDesktopRatio}))`,
+                                } as React.CSSProperties}
+                                className="relative mx-auto hidden aspect-[var(--w)/var(--h)] w-(--ancho) overflow-hidden lg:block"
+                            >
+                                <Image
+                                    src={planoDesktopImage}
+                                    alt="Plano arquitectónico de Casa Sinaí"
+                                    fill
+                                    placeholder="blur"
+                                    sizes="(min-width: 1024px) 1100px, 0px"
                                     className="object-contain transition-transform duration-700 hover:scale-[1.03]"
                                 />
                             </div>

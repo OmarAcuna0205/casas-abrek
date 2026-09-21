@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     title: "Aviso de privacidad | Casas Abrek",
     description:
         "Cómo Casas Abrek usa y protege los datos personales que compartes en el sitio y por WhatsApp.",
+    alternates: { canonical: "/aviso-de-privacidad" },
 };
 
 // domicilio no hay uno como tal: son de Chihuahua (lo confirmo Omar)

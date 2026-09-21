@@ -1,6 +1,6 @@
 export const site = {
     name: "Casas Abrek",
-    url: "https://casas-abrek.vercel.app",
+    url: "https://casasabrek.com",
     // clave publica de Web3Forms (form "Casas Abrek"): los mensajes del formulario
     // de Contacto llegan al correo con el que se creo la clave
     web3formsKey: "b98088bc-0c79-4d92-aec2-b094c798e01c",
