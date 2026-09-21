@@ -123,12 +123,12 @@ export default function CasaSinai() {
                             transition={{ duration: 0.8, ease }}
                             className="mt-8 lg:mt-10"
                         >
-                            {/* movil: hasta el 70% del alto de la pantalla */}
+                            {/* movil: hasta el 85% del alto de la pantalla */}
                             <div
                                 style={{
                                     "--w": planoImage.width,
                                     "--h": planoImage.height,
-                                    "--ancho": `min(100%, calc(70dvh * ${planoRatio}))`,
+                                    "--ancho": `min(100%, calc(85dvh * ${planoRatio}))`,
                                 } as React.CSSProperties}
                                 className="relative mx-auto aspect-[var(--w)/var(--h)] w-(--ancho) overflow-hidden lg:hidden"
                             >
@@ -137,7 +137,10 @@ export default function CasaSinai() {
                                     alt="Plano arquitectónico de Casa Sinaí"
                                     fill
                                     placeholder="blur"
-                                    sizes="(min-width: 1024px) 0px, 300px"
+                                    // tal cual, sin pasar por el optimizador de Next: al recomprimirlo
+                                    // a AVIF calidad 75 las lineas y los textos del plano se emborronaban.
+                                    // El JPG ya va optimizado (~170 KB)
+                                    unoptimized
                                     className="object-contain transition-transform duration-700 hover:scale-[1.03]"
                                 />
                             </div>
@@ -156,7 +159,10 @@ export default function CasaSinai() {
                                     alt="Plano arquitectónico de Casa Sinaí"
                                     fill
                                     placeholder="blur"
-                                    sizes="(min-width: 1024px) 1100px, 0px"
+                                    // tal cual, sin pasar por el optimizador de Next: al recomprimirlo
+                                    // a AVIF calidad 75 las lineas y los textos del plano se emborronaban.
+                                    // El JPG ya va optimizado (~170 KB)
+                                    unoptimized
                                     className="object-contain transition-transform duration-700 hover:scale-[1.03]"
                                 />
                             </div>
