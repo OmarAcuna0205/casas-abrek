@@ -62,7 +62,10 @@ function GalleryCard({
 
 // sin scroll-snap: al terminar el deslizamiento con trackpad el snap jalaba la
 // fila para alinearla y se sentia como un tiron. overscroll-x-contain evita que
-// al llegar al final el gesto de deslizar se vuelva "atras" en el navegador
+// al llegar al final el gesto de deslizar se vuelva "atras" en el navegador.
+// overflow-y-hidden: con overflow-x-auto el navegador tambien deja scroll en Y, y
+// como las fotos entran desde 24px abajo, la fila se quedaba con el scroll vertical
+// y la pagina se sentia trabada. Asi el scroll vertical siempre pasa a la pagina
 export default function ProjectGallery({ images }: { images: GalleryImage[] }) {
     const isDesktop = useMediaQuery("(min-width: 1024px)");
     const listRef = useRef<HTMLUListElement>(null);
@@ -71,7 +74,7 @@ export default function ProjectGallery({ images }: { images: GalleryImage[] }) {
     return (
         <ul
             ref={listRef}
-            className="mt-8 flex flex-col gap-5 px-6 lg:mt-10 lg:flex-row lg:gap-6 lg:overflow-x-auto lg:overscroll-x-contain lg:px-10 lg:pb-5 lg:pr-10 lg:scroll-smooth lg:[scrollbar-width:thin]"
+            className="mt-8 flex flex-col gap-5 px-6 lg:mt-10 lg:flex-row lg:gap-6 lg:overflow-x-auto lg:overflow-y-hidden lg:overscroll-x-contain lg:px-10 lg:pb-5 lg:pr-10 lg:scroll-smooth lg:[scrollbar-width:thin]"
         >
             {images.map((item, index) => (
                 <GalleryCard

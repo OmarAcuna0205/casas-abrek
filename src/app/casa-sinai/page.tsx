@@ -35,6 +35,9 @@ const renders: GalleryImage[] = [
     { image: renderSix, alt: "Render nocturno de Casa Sinaí" },
 ];
 
+// alto entre ancho del plano (vertical, mas de 2)
+const planoRatio = planoImage.height / planoImage.width;
+
 const details = [
     { label: "Ubicación", value: "Rincón de las Bugambilias, Chihuahua" },
     { label: "Estatus", value: "Preventa" },
@@ -97,7 +100,7 @@ export default function CasaSinai() {
                     <ProjectGallery images={renders} />
                 </section>
 
-                <section aria-labelledby="planos-titulo" className="bg-primary px-6 py-12 text-accent lg:px-10 lg:py-14">
+                <section id="planos" aria-labelledby="planos-titulo" className="scroll-mt-18 bg-primary px-6 py-12 text-accent lg:scroll-mt-19 lg:px-10 lg:py-14">
                     <div className="mx-auto max-w-7xl">
                         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                             <h2 id="planos-titulo" className="font-display text-5xl font-bold uppercase leading-none sm:text-6xl">Planos</h2>
@@ -106,20 +109,36 @@ export default function CasaSinai() {
                             </p>
                         </div>
 
+                        {/* el plano es vertical: en movil va tal cual y en desktop se gira 90°
+                            para que quede horizontal. La caja toma la proporcion ya girada y el
+                            plano va centrado adentro. Las medidas salen de la imagen, asi no se
+                            descuadra si la cambian. Los calc van en variables porque Tailwind no
+                            detecta clases con calc(100%*...) */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.98 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.8, ease }}
-                            className="relative mt-8 flex aspect-[1288/862] items-center justify-center overflow-hidden lg:mt-10 lg:h-[calc(100dvh-15rem)] lg:aspect-auto"
+                            style={{
+                                "--w": planoImage.width,
+                                "--h": planoImage.height,
+                                // en desktop no pasa del alto de la pantalla (igual que los renders)
+                                "--plano-max": `calc((100dvh - 15rem) * ${planoRatio})`,
+                                // sin girar, el plano mide de alto lo que la caja de ancho
+                                "--plano-alto": `${planoRatio * 100}%`,
+                            } as React.CSSProperties}
+                            className="relative mx-auto mt-8 w-full overflow-hidden sm:max-w-md lg:mt-10 lg:aspect-[var(--h)/var(--w)] lg:max-w-(--plano-max)"
                         >
-                            <Image
-                                src={planoImage}
-                                alt="Plano arquitectónico de Casa Sinaí"
-                                placeholder="blur"
-                                sizes="(min-width: 1280px) 1280px, 100vw"
-                                className="h-full w-auto max-w-full object-contain transition-transform duration-700 hover:scale-[1.03]"
-                            />
+                            <div className="relative aspect-[var(--w)/var(--h)] w-full lg:absolute lg:top-1/2 lg:left-1/2 lg:h-(--plano-alto) lg:w-auto lg:-translate-x-1/2 lg:-translate-y-1/2 lg:rotate-90">
+                                <Image
+                                    src={planoImage}
+                                    alt="Plano arquitectónico de Casa Sinaí"
+                                    fill
+                                    placeholder="blur"
+                                    sizes="(min-width: 1024px) 600px, (min-width: 640px) 448px, 100vw"
+                                    className="object-contain transition-transform duration-700 hover:scale-[1.03]"
+                                />
+                            </div>
                         </motion.div>
                     </div>
                 </section>
