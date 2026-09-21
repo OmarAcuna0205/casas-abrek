@@ -1,8 +1,8 @@
 import type { StaticImageData } from "next/image";
-import sinaiImage from "../../public/sinai.png";
-import plenitudeImage from "../../public/plenitude.png";
-import auroraImage from "../../public/aurora.png";
-import armoniaImage from "../../public/armonia.png";
+import sinaiImage from "../../public/sinai.jpg";
+import plenitudeImage from "../../public/plenitude.jpg";
+import auroraImage from "../../public/aurora.jpg";
+import armoniaImage from "../../public/armonia.jpg";
 
 export type Project = {
   id: string;

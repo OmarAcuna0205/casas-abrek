@@ -4,19 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { WhatsappLogoIcon } from "@phosphor-icons/react";
-import heroImage from "../../public/hero.png";
+import heroImage from "../../public/hero.jpg";
+import { useSiteReady } from "@/components/SiteLoader";
 import { buildLink } from "@/lib/whatsapp";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
-// cae desde arriba
-const drop = (delay: number) => ({
-    initial: { opacity: 0, y: -40 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.9, delay, ease },
-});
-
 export default function Hero() {
+    // todo espera a que se quite el loader, si no se anima detras de el
+    const ready = useSiteReady();
+
+    // cae desde arriba
+    const drop = (delay: number) => ({
+        initial: { opacity: 0, y: -40 },
+        animate: ready ? { opacity: 1, y: 0 } : undefined,
+        transition: { duration: 0.9, delay, ease },
+    });
+
     return (
         <section
             id="inicio"
@@ -24,7 +28,7 @@ export default function Hero() {
         >
             <motion.div
                 initial={{ opacity: 0, scale: 1.06 }}
-                animate={{ opacity: 1, scale: 1 }}
+                animate={ready ? { opacity: 1, scale: 1 } : undefined}
                 transition={{ duration: 2.2, ease }}
                 className="absolute inset-0 will-change-transform"
             >
@@ -47,7 +51,7 @@ export default function Hero() {
             <div className="absolute inset-0 hidden bg-linear-to-r from-primary/50 via-primary/20 via-35% to-transparent to-60% md:block" />
 
             <div className="relative z-10 flex h-full items-end">
-                <div className="mx-auto w-full max-w-7xl px-6 pt-24 pb-8 lg:px-10 lg:pb-12">
+                <div className="w-full px-6 pt-24 pb-8 lg:px-10 lg:pb-12">
                     <div className="max-w-2xl">
                         <motion.div {...drop(0.4)} className="w-fit">
                             <p className="font-body text-[9px] font-semibold uppercase tracking-[0.22em] text-accent lg:text-xs lg:font-light lg:tracking-[0.35em]">
@@ -97,7 +101,7 @@ export default function Hero() {
 
                         <motion.div
                             initial={{ opacity: 0, x: -50 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            animate={ready ? { opacity: 1, x: 0 } : undefined}
                             transition={{ duration: 0.9, delay: 1.4, ease }}
                         >
                             <Link
@@ -132,7 +136,7 @@ export default function Hero() {
                 rel="noopener noreferrer"
                 aria-label="Contáctanos por WhatsApp"
                 initial={{ opacity: 0, scale: 0.3 }}
-                animate={{ opacity: 1, scale: 1 }}
+                animate={ready ? { opacity: 1, scale: 1 } : undefined}
                 transition={{
                     delay: 1.7,
                     type: "spring",

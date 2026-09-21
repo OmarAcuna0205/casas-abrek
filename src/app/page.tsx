@@ -3,6 +3,7 @@ import Hero from "@/sections/Hero";
 import BuildVsBuy from "@/sections/BuildVsBuy";
 import Videos from "@/sections/Videos";
 import Projects from "@/sections/Projects";
+import About from "@/sections/About";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
         <BuildVsBuy />
         <Videos />
         <Projects />
+        <About />
       </main>
     </>
   );

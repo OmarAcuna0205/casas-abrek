@@ -3,8 +3,8 @@
 import { useSyncExternalStore } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { motion } from "motion/react";
-import comprarImage from "../../public/comprar.png";
-import construirImage from "../../public/construir.png";
+import comprarImage from "../../public/comprar.jpg";
+import construirImage from "../../public/construir.jpg";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
