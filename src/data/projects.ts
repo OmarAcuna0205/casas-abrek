@@ -38,7 +38,7 @@ export const projects: Project[] = [
     detail: "Condesa Rejón II",
     image: plenitudeImage,
     alt: "Fachada de Casa Plenitude, casa de una planta construida por Casas Abrek.",
-    href: "/en-construccion",
+    href: "/casa-plenitude",
   },
   {
     id: "aurora",
@@ -47,7 +47,7 @@ export const projects: Project[] = [
     detail: "Monte Caleres",
     image: auroraImage,
     alt: "Fachada de Casa Aurora, casa de una planta construida por Casas Abrek en Monte Caleres.",
-    href: "/en-construccion",
+    href: "/casa-aurora",
   },
   {
     id: "armonia",
@@ -56,6 +56,6 @@ export const projects: Project[] = [
     detail: "Bosques del Valle II",
     image: armoniaImage,
     alt: "Fachada de Casa Armonía, casa de dos plantas construida por Casas Abrek en Bosques del Valle II.",
-    href: "/en-construccion",
+    href: "/casa-armonia",
   },
 ];

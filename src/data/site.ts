@@ -1,14 +1,14 @@
 export const site = {
     name: "Casas Abrek",
+    url: "https://casas-abrek.vercel.app",
     city: "Chihuahua",
     // 614 184 9364, formato internacional sin + ni espacios
     whatsapp: "526141849364",
     phoneLabel: "+52 614 184 9364",
-    // TODO: cambiar por el correo real de Abrek cuando lo tengan
-    email: "contacto@casasabrek.com",
+    // TODO: poner el correo real cuando lo tengan; vacio, el footer no lo muestra
+    email: "",
     instagram: "https://www.instagram.com/casasabrek/",
     facebook: "https://www.facebook.com/casasabrek",
-    // TODO: cambiar por la cuenta de Abrek cuando la tengan; por ahora lleva a TikTok
-    tiktok: "https://www.tiktok.com/",
+    tiktok: "https://www.tiktok.com/@abrek808",
     portfolio: "https://portfolio-omar-acuna.vercel.app/",
 };

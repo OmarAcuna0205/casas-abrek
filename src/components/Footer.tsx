@@ -110,14 +110,16 @@ export default function Footer() {
                                         {site.phoneLabel}
                                     </a>
                                 </li>
-                                <li>
-                                    <a
-                                        href={`mailto:${site.email}`}
-                                        className={linkClass}
-                                    >
-                                        {site.email}
-                                    </a>
-                                </li>
+                                {site.email && (
+                                    <li>
+                                        <a
+                                            href={`mailto:${site.email}`}
+                                            className={linkClass}
+                                        >
+                                            {site.email}
+                                        </a>
+                                    </li>
+                                )}
                             </ul>
                         </motion.div>
 
@@ -151,13 +153,20 @@ export default function Footer() {
                             transition: { duration: 0.7, delay: 0.55, ease },
                         },
                     }}
-                    className="mt-10 flex flex-col gap-2 border-t border-accent/15 pt-6 text-center font-body text-xs text-accent/60 sm:flex-row sm:items-center sm:justify-between sm:text-left"
+                    // en desktop los lados miden lo mismo para que el aviso quede justo al centro
+                    className="mt-10 flex flex-col gap-2 border-t border-accent/15 pt-6 text-center font-body text-xs text-accent/60 sm:grid sm:grid-cols-[1fr_auto_1fr] sm:items-center sm:gap-6"
                 >
-                    <p>
+                    <p className="sm:text-left">
                         © {new Date().getFullYear()} Casas Abrek. Todos los
                         derechos reservados.
                     </p>
-                    <p>
+                    <Link
+                        href="/aviso-de-privacidad"
+                        className="text-accent underline decoration-accent/40 underline-offset-4 transition-colors duration-300 hover:text-secondary hover:decoration-secondary"
+                    >
+                        Aviso de privacidad
+                    </Link>
+                    <p className="sm:text-right">
                         Diseño web por{" "}
                         <a
                             href={site.portfolio}

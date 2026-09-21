@@ -1,10 +1,10 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { motion } from "motion/react";
 import comprarImage from "../../public/comprar.jpg";
 import construirImage from "../../public/construir.jpg";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
@@ -16,18 +16,6 @@ const rise = (delay: number) => ({
 // en desktop los paneles van lado a lado y "Construir" entra despues de "Comprar";
 // en movil van apilados, cada uno se anima al llegar a el y no necesita esperar
 const desktopQuery = "(min-width: 768px)";
-
-function useIsDesktop() {
-    return useSyncExternalStore(
-        (onChange) => {
-            const query = window.matchMedia(desktopQuery);
-            query.addEventListener("change", onChange);
-            return () => query.removeEventListener("change", onChange);
-        },
-        () => window.matchMedia(desktopQuery).matches,
-        () => false
-    );
-}
 
 const comprar = [
     "Pagas un precio cerrado",
@@ -160,7 +148,7 @@ function Panel({
 }
 
 export default function BuildVsBuy() {
-    const isDesktop = useIsDesktop();
+    const isDesktop = useMediaQuery(desktopQuery);
 
     return (
         <section

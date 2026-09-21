@@ -3,10 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { WhatsappLogoIcon } from "@phosphor-icons/react";
 import heroImage from "../../public/hero.jpg";
+import CircleCta, { quizCta } from "@/components/CircleCta";
 import { useSiteReady } from "@/components/SiteLoader";
-import { buildLink } from "@/lib/whatsapp";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
@@ -49,6 +48,8 @@ export default function Hero() {
             <div className="absolute inset-0 bg-linear-to-t from-primary/70 via-primary/30 via-35% to-transparent to-65% md:hidden" />
             {/* desktop: de izquierda a derecha */}
             <div className="absolute inset-0 hidden bg-linear-to-r from-primary/50 via-primary/20 via-35% to-transparent to-60% md:block" />
+            {/* y de derecha a izquierda, para que se lea el circulo del cuestionario */}
+            <div className="absolute inset-0 hidden bg-linear-to-l from-primary/50 via-primary/15 via-20% to-transparent to-45% md:block" />
 
             <div className="relative z-10 flex h-full items-end">
                 <div className="w-full px-6 pt-24 pb-8 lg:px-10 lg:pb-12">
@@ -130,11 +131,8 @@ export default function Hero() {
                 </div>
             </div>
 
-            <motion.a
-                href={buildLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Contáctanos por WhatsApp"
+            {/* el mismo circulo de Casa Sinaí: lleva al cuestionario */}
+            <motion.div
                 initial={{ opacity: 0, scale: 0.3 }}
                 animate={ready ? { opacity: 1, scale: 1 } : undefined}
                 transition={{
@@ -143,50 +141,10 @@ export default function Hero() {
                     stiffness: 260,
                     damping: 8,
                 }}
-                className="absolute right-6 bottom-8 z-10 hidden h-28 w-28 md:flex items-center justify-center rounded-full border border-accent/40 backdrop-blur-xs transition-colors duration-300 hover:bg-secondary/30 lg:right-10 lg:bottom-12 lg:h-40 lg:w-40"
+                className="absolute right-6 bottom-8 z-10 hidden md:block lg:right-10 lg:bottom-12"
             >
-                <motion.span
-                    animate={{ rotate: 360 }}
-                    transition={{
-                        duration: 18,
-                        repeat: Infinity,
-                        ease: "linear",
-                    }}
-                    className="absolute inset-0"
-                >
-                    <svg viewBox="0 0 100 100" className="h-full w-full">
-                        <defs>
-                            <path
-                                id="hero-badge"
-                                d="M 50,50 m -41,0 a 41,41 0 1,1 82,0 a 41,41 0 1,1 -82,0"
-                                fill="none"
-                            />
-                        </defs>
-                        <text className="fill-accent font-body text-[7px] font-medium uppercase">
-                            <textPath
-                                href="#hero-badge"
-                                startOffset="0%"
-                                textLength="254"
-                                lengthAdjust="spacing"
-                            >
-                                Quiero construir mi casa · Contáctanos por
-                                WhatsApp ·
-                            </textPath>
-                        </text>
-                    </svg>
-                </motion.span>
-
-                <WhatsappLogoIcon
-                    size={40}
-                    weight="fill"
-                    className="text-accent lg:hidden"
-                />
-                <WhatsappLogoIcon
-                    size={56}
-                    weight="fill"
-                    className="hidden text-accent lg:block"
-                />
-            </motion.a>
+                <CircleCta {...quizCta} pathId="hero-cta" bounce />
+            </motion.div>
         </section>
     );
 }

@@ -3,10 +3,6 @@ export type Video = {
     id: string;
     title: string;
     description: string;
-    // TODO: poner la duracion real de cada reel, formato "0:48"
-    duration?: string;
-    // TODO: exportar la portada de cada reel a /public y ponerla aqui
-    thumbnail?: string;
 };
 
 export const videos: Video[] = [

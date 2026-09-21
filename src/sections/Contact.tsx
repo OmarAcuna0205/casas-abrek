@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import { motion } from "motion/react";
 import {
     EnvelopeSimpleIcon,
@@ -11,6 +11,7 @@ import {
 } from "@phosphor-icons/react";
 import { site } from "@/data/site";
 import { quoteLink } from "@/lib/whatsapp";
+import { useMediaQuery } from "@/lib/useMediaQuery";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
@@ -73,23 +74,11 @@ const block = (delay: number) => ({
 // a derecha; en movil van apiladas y cada una se anima al llegar a ella
 const desktopQuery = "(min-width: 1024px)";
 
-function useIsDesktop() {
-    return useSyncExternalStore(
-        (onChange) => {
-            const query = window.matchMedia(desktopQuery);
-            query.addEventListener("change", onChange);
-            return () => query.removeEventListener("change", onChange);
-        },
-        () => window.matchMedia(desktopQuery).matches,
-        () => false
-    );
-}
-
 const inputClass =
     "w-full border-b border-primary/20 bg-transparent pb-3 font-body text-sm tracking-widest text-primary transition-colors placeholder:uppercase placeholder:text-primary/60 focus:border-secondary focus:outline-none aria-invalid:border-primary";
 
 export default function Contact() {
-    const isDesktop = useIsDesktop();
+    const isDesktop = useMediaQuery(desktopQuery);
     const [values, setValues] = useState(emptyValues);
     const [invalid, setInvalid] = useState<FieldName[]>([]);
     const [feedback, setFeedback] = useState<{

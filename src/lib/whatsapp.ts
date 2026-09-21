@@ -7,7 +7,3 @@ export function whatsappLink(message: string) {
 export const quoteLink = whatsappLink(
     "Hola, me gustaría cotizar la construcción de mi casa."
 );
-
-export const buildLink = whatsappLink(
-    "Hola, tengo un terreno y quiero construir mi casa. ¿Me pueden dar información?"
-);
