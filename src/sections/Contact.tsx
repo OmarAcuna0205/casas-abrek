@@ -174,16 +174,6 @@ export default function Contact() {
                         Construyendo tus{" "}
                         <span className="text-secondary">Sueños</span>
                     </motion.h2>
-
-                    <motion.p
-                        initial={{ opacity: 0, x: 16 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.6 }}
-                        transition={{ duration: 0.9, delay: 0.4, ease }}
-                        className="font-body text-sm font-medium leading-relaxed text-primary/70 lg:whitespace-nowrap lg:text-base"
-                    >
-                        Cuéntanos qué quieres construir y te ayudamos a empezar.
-                    </motion.p>
                 </div>
 
                 <div className="mt-8 grid gap-6 lg:mt-10 lg:grid-cols-3">

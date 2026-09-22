@@ -85,17 +85,6 @@ export default function About() {
                     >
                         Sobre <span className="text-secondary">Casas Abrek</span>
                     </motion.h2>
-
-                    <motion.p
-                        initial={{ opacity: 0, x: 16 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.6 }}
-                        transition={{ duration: 0.9, delay: 0.4, ease }}
-                        className="font-body text-sm font-medium leading-relaxed text-primary/70 lg:text-base xl:whitespace-nowrap"
-                    >
-                        Acompañamos a cada familia del terreno vacío hasta la
-                        casa lista para vivir.
-                    </motion.p>
                 </div>
 
                 <div className="mt-12 lg:mt-16">

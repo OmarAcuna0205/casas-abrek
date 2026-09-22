@@ -9,8 +9,8 @@ import CircleCta, { quizCta } from "@/components/CircleCta";
 import ProjectGallery, { type GalleryImage } from "@/components/ProjectGallery";
 import Contact from "@/sections/Contact";
 import sinaiImage from "../../../public/sinai.jpg";
-import planoImage from "../../../public/planos.jpg";
-import planoDesktopImage from "../../../public/planosDesktop.jpg";
+import planoImage from "../../../public/planos.png";
+import planoDesktopImage from "../../../public/planosDesktop.png";
 import renderOne from "../../../public/render1.jpg";
 import renderTwo from "../../../public/render2.jpg";
 import renderThree from "../../../public/render3.jpg";
@@ -71,7 +71,7 @@ export default function CasaSinai() {
                     >
                         <h1
                             id="sinai-titulo"
-                            className="font-display text-[clamp(4.5rem,13vw,13rem)] font-medium uppercase leading-[1.05] tracking-tight sm:leading-[0.82] text-accent lg:text-[clamp(5.5rem,10vw,10rem)]"
+                            className="font-display text-[clamp(4.5rem,13vw,13rem)] font-medium uppercase leading-[1.15] tracking-tight sm:leading-[0.82] text-accent lg:text-[clamp(5.5rem,10vw,10rem)]"
                         >
                             {/* en movil va en dos lineas, como las demas casas
                                 (Armonía y Aurora brincan solas por ser mas largas) */}
@@ -106,9 +106,6 @@ export default function CasaSinai() {
                     <div className="mx-auto max-w-7xl">
                         <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                             <h2 id="planos-titulo" className="font-display text-5xl font-bold uppercase leading-none sm:text-6xl">Planos</h2>
-                            <p className="font-body text-sm leading-relaxed text-accent/70 lg:whitespace-nowrap">
-                                Conoce la planta arquitectónica y la relación de la casa con su entorno.
-                            </p>
                         </div>
 
                         {/* dos versiones del plano: vertical en movil y horizontal en desktop.
@@ -178,7 +175,21 @@ export default function CasaSinai() {
                             viewport={{ once: true, amount: 0.25 }}
                             transition={{ duration: 0.7, ease }}
                         >
-                            <h2 id="ficha-titulo" className="font-display text-5xl font-bold uppercase leading-none text-primary">Casa Sinaí</h2>
+                            {/* "Casa" arriba y el nombre abajo, como el salto del hero.
+                                1.15 da aire entre lineas y el acento de la Í no choca */}
+                            <h2 id="ficha-titulo" className="font-display text-5xl font-bold uppercase leading-[1.15] text-primary">
+                                Casa
+                                <br />
+                                Sinaí
+                            </h2>
+                            {/* linea dorada del ancho de la palabra "Ubicación": lleva esa misma
+                                palabra, invisible y con el estilo de las etiquetas, para medirla */}
+                            <span
+                                aria-hidden="true"
+                                className="mt-4 block h-0.5 w-fit overflow-hidden bg-secondary font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-transparent select-none"
+                            >
+                                Ubicación
+                            </span>
                             <dl className="mt-8 grid gap-6">
                                 {details.map((detail) => (
                                     <div key={detail.label}>
@@ -194,7 +205,7 @@ export default function CasaSinai() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.25 }}
                             transition={{ duration: 0.7, delay: 0.12, ease }}
-                            className="lg:pt-8"
+                            className="lg:border-l-2 lg:border-secondary/30 lg:pt-8 lg:pl-16"
                         >
                             <p className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-secondary">Concepto</p>
                             <p className="mt-3 max-w-xl font-body text-lg font-normal leading-relaxed text-primary/80 lg:text-xl">

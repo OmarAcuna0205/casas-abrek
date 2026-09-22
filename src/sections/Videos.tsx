@@ -25,16 +25,6 @@ export default function Videos() {
                         Lo que nadie te dice sobre{" "}
                         <span className="text-secondary">Construir</span>
                     </motion.h2>
-
-                    <motion.p
-                        initial={{ opacity: 0, x: 16 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.6 }}
-                        transition={{ duration: 0.9, delay: 0.4, ease }}
-                        className="font-body text-sm font-medium leading-relaxed text-primary/70 lg:whitespace-nowrap lg:text-base"
-                    >
-                        Las dudas más comunes, resueltas antes de decidir.
-                    </motion.p>
                 </div>
 
                 <ul className="mt-10 grid gap-6 md:grid-cols-3 lg:mt-12">

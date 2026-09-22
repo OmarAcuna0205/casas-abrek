@@ -170,19 +170,6 @@ export default function BuildVsBuy() {
                     <span className="text-secondary">Construir</span>
                     <span className="text-black">?</span>
                 </motion.h2>
-
-                <motion.p
-                    initial={{ opacity: 0, x: 16 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, amount: 0.6 }}
-                    transition={{ duration: 0.9, delay: 0.4, ease }}
-                    className="max-w-xl text-balance font-body text-sm font-medium leading-relaxed text-primary/70 lg:text-base"
-                >
-                    Mucha gente cree que comprar es más fácil y más barato.{" "}
-                    <br className="hidden md:block" />
-                    Construir te da control sobre tu inversión y sobre cómo será
-                    tu casa.
-                </motion.p>
             </div>
 
             <div className="grid md:grid-cols-2">

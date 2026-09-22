@@ -72,7 +72,7 @@ export default function Hero() {
                                 {...drop(0.9)}
                                 className="relative block w-fit font-body font-medium normal-case italic text-secondary"
                             >
-                                construimos
+                                Construimos
                                 {/* trazo provisional, se cambia cuando llegue la imagen */}
                                 <svg
                                     viewBox="0 0 300 20"

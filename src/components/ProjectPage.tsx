@@ -28,6 +28,8 @@ export type ProjectPageData = {
 // Casa Sinaí tiene su propia pagina porque lleva renders, planos y documentos
 export default function ProjectPage({ project }: { project: ProjectPageData }) {
     const { name, hero, images, details, concept } = project;
+    // en la ficha va "Casa" arriba y el nombre abajo, como el salto del hero
+    const [firstWord, ...restWords] = name.split(" ");
 
     // en movil el hero recorta la fachada: va completa al inicio de las imagenes
     const gallery: GalleryImage[] = [
@@ -66,7 +68,7 @@ export default function ProjectPage({ project }: { project: ProjectPageData }) {
                     >
                         <h1
                             id="proyecto-titulo"
-                            className="font-display text-[clamp(4.5rem,13vw,13rem)] font-medium uppercase leading-[1.05] tracking-tight sm:leading-[0.82] text-accent lg:text-[clamp(5.5rem,10vw,10rem)]"
+                            className="font-display text-[clamp(4.5rem,13vw,13rem)] font-medium uppercase leading-[1.15] tracking-tight sm:leading-[0.82] text-accent lg:text-[clamp(5.5rem,10vw,10rem)]"
                         >
                             {name}
                         </h1>
@@ -99,7 +101,20 @@ export default function ProjectPage({ project }: { project: ProjectPageData }) {
                             viewport={{ once: true, amount: 0.25 }}
                             transition={{ duration: 0.7, ease }}
                         >
-                            <h2 id="ficha-titulo" className="font-display text-5xl font-bold uppercase leading-none text-primary">{name}</h2>
+                            {/* 1.15 da aire entre lineas y los acentos (Armonía) no chocan */}
+                            <h2 id="ficha-titulo" className="font-display text-5xl font-bold uppercase leading-[1.15] text-primary">
+                                {firstWord}
+                                <br />
+                                {restWords.join(" ")}
+                            </h2>
+                            {/* linea dorada del ancho de la palabra "Ubicación": lleva esa misma
+                                palabra, invisible y con el estilo de las etiquetas, para medirla */}
+                            <span
+                                aria-hidden="true"
+                                className="mt-4 block h-0.5 w-fit overflow-hidden bg-secondary font-body text-[10px] font-semibold uppercase tracking-[0.22em] text-transparent select-none"
+                            >
+                                Ubicación
+                            </span>
                             <dl className="mt-8 grid gap-6">
                                 {details.map((detail) => (
                                     <div key={detail.label}>
@@ -115,7 +130,7 @@ export default function ProjectPage({ project }: { project: ProjectPageData }) {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.25 }}
                             transition={{ duration: 0.7, delay: 0.12, ease }}
-                            className="lg:pt-8"
+                            className="lg:border-l-2 lg:border-secondary/30 lg:pt-8 lg:pl-16"
                         >
                             <p className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-secondary">Concepto</p>
                             <p className="mt-3 max-w-xl font-body text-lg font-normal leading-relaxed text-primary/80 lg:text-xl">

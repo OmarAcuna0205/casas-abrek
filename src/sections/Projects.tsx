@@ -128,16 +128,6 @@ export default function Projects() {
                     >
                         Nuestros <span className="text-secondary">Proyectos</span>
                     </motion.h2>
-
-                    <motion.p
-                        initial={{ opacity: 0, x: 16 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true, amount: 0.6 }}
-                        transition={{ duration: 0.9, delay: 0.4, ease }}
-                        className="font-body text-sm font-medium leading-relaxed text-primary/70 lg:whitespace-nowrap lg:text-base"
-                    >
-                        Casas diseñadas y construidas por Abrek en Chihuahua.
-                    </motion.p>
                 </div>
 
                 <ul className="mt-6 grid gap-6 md:grid-cols-2 lg:mt-8">
