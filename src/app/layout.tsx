@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Oswald, Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { SiteLoaderProvider } from "@/components/SiteLoader";
@@ -54,6 +55,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </noscript>
         <SiteLoaderProvider>{children}</SiteLoaderProvider>
       </body>
+      {/* solo en produccion, para que las visitas en local no ensucien los datos */}
+      {process.env.NODE_ENV === "production" && <GoogleAnalytics gaId={site.gaId} />}
     </html>
   );
 }

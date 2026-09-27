@@ -26,7 +26,7 @@ export default function AvisoDePrivacidad() {
                         Aviso de privacidad
                     </h1>
                     <p className="mt-4 font-body text-xs uppercase tracking-[0.2em] text-primary/60">
-                        Última actualización: 21 de septiembre de 2026
+                        Última actualización: 27 de septiembre de 2026
                     </p>
 
                     <h2 className={heading}>Responsable</h2>
@@ -52,6 +52,11 @@ export default function AvisoDePrivacidad() {
                         <li>
                             Si usas el formulario de contacto: tu nombre, correo, teléfono y
                             mensaje.
+                        </li>
+                        <li>
+                            Al navegar por el sitio: datos de uso como las páginas que visitas,
+                            el tipo de dispositivo y navegador, y tu ubicación aproximada
+                            (ciudad o región). No te identifican por nombre.
                         </li>
                     </ul>
                     <p className={paragraph}>
@@ -122,8 +127,28 @@ export default function AvisoDePrivacidad() {
 
                     <h2 className={heading}>Cookies y contenido de terceros</h2>
                     <p className={paragraph}>
-                        Este sitio no usa cookies propias de rastreo ni de publicidad. La
-                        sección de videos muestra publicaciones de Instagram, que pueden usar
+                        Usamos Google Analytics, un servicio de Google, para saber cuántas
+                        personas visitan el sitio, qué páginas ven y cómo llegan a él. Usa
+                        cookies para distinguir visitas y nos muestra la información en
+                        conjunto, sin tu nombre ni tus datos de contacto. Solo la usamos para
+                        mejorar el sitio, no para publicidad. Google la trata conforme a su
+                        propia política de privacidad.
+                    </p>
+                    <p className={paragraph}>
+                        Puedes bloquear o borrar las cookies desde la configuración de tu
+                        navegador, o instalar el{" "}
+                        <a
+                            href="https://tools.google.com/dlpage/gaoptout"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-semibold text-primary underline decoration-primary/30 underline-offset-4 transition-colors duration-300 hover:text-secondary hover:decoration-secondary"
+                        >
+                            complemento de inhabilitación de Google Analytics
+                        </a>
+                        . El sitio sigue funcionando igual.
+                    </p>
+                    <p className={paragraph}>
+                        La sección de videos muestra publicaciones de Instagram, que pueden usar
                         sus propias cookies conforme a las políticas de Meta.
                     </p>
 
