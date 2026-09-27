@@ -7,9 +7,10 @@ export const site = {
     // ID de medicion de Google Analytics 4 (flujo web "abrek")
     gaId: "G-JTZNR7SZZ9",
     city: "Chihuahua",
-    // 614 184 9364, formato internacional sin + ni espacios
-    whatsapp: "526141849364",
-    phoneLabel: "+52 614 184 9364",
+    // 614 495 8921, formato internacional sin + ni espacios (sin el 1 de celular:
+    // Mexico lo quito en 2019 y wa.me y tel: funcionan sin el)
+    whatsapp: "526144958921",
+    phoneLabel: "+52 614 495 8921",
     // si se deja vacio, el footer no lo muestra
     email: "casasabrek@gmail.com",
     instagram: "https://www.instagram.com/casasabrek/",
