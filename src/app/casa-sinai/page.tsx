@@ -17,6 +17,10 @@ import renderThree from "../../../public/render3.jpg";
 import renderFour from "../../../public/render4.jpg";
 import renderFive from "../../../public/render5.jpg";
 import renderSix from "../../../public/render6.jpg";
+import terraceriasOne from "../../../public/terracerias1.jpg";
+import terraceriasTwo from "../../../public/terracerias2.jpg";
+import terraceriasThree from "../../../public/terracerias3.jpg";
+import terraceriasFour from "../../../public/terracerias4.jpg";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
@@ -35,6 +39,19 @@ const renders: GalleryImage[] = [
     { image: renderFive, alt: "Render de la terraza de Casa Sinaí" },
     { image: renderSix, alt: "Render nocturno de Casa Sinaí" },
 ];
+
+// fotos de obra: son verticales y se recortan a 4:3 para que midan lo mismo que
+// los renders. position elige que parte de la foto queda a la vista
+const terracerias: GalleryImage[] = [
+    { image: terraceriasOne, alt: "Excavación de la cimentación de Casa Sinaí", ratio: 4 / 3, position: "center 70%" },
+    { image: terraceriasThree, alt: "Retroexcavadora abriendo el terreno de Casa Sinaí", ratio: 4 / 3, position: "center 40%" },
+    { image: terraceriasTwo, alt: "Trabajadores excavando la cimentación de Casa Sinaí", ratio: 4 / 3, position: "center 95%" },
+    { image: terraceriasFour, alt: "Planta de cimentación de Casa Sinaí frente a la excavación en obra", ratio: 4 / 3 },
+];
+
+// avance general de la obra, de 0 a 100. Se actualiza a mano conforme avance.
+// PENDIENTE: confirmar el porcentaje real con Josué
+const avanceObra = 10;
 
 // ancho entre alto de cada plano: el de movil es vertical y el de desktop horizontal
 const planoRatio = planoImage.width / planoImage.height;
@@ -88,6 +105,34 @@ export default function CasaSinai() {
                     </div>
                 </section>
 
+                {/* avance general de la obra, antes de los renders para que se vea de entrada.
+                    Misma barra dorada que el quiz */}
+                <div className="px-6 pt-12 lg:px-10 lg:pt-14">
+                    <div className="mx-auto max-w-7xl">
+                        <div className="flex items-end justify-between gap-4">
+                            <p id="avance-obra" className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-primary/80">Avance general de obra</p>
+                            <p className="font-display text-4xl font-bold leading-none text-secondary sm:text-5xl">{avanceObra}%</p>
+                        </div>
+                        <div
+                            role="progressbar"
+                            aria-labelledby="avance-obra"
+                            aria-valuenow={avanceObra}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                            className="mt-4 h-1 bg-primary/10"
+                        >
+                            {/* scaleX en vez de width para que la barra vaya por GPU */}
+                            <motion.div
+                                initial={{ transform: "scaleX(0)" }}
+                                whileInView={{ transform: `scaleX(${avanceObra / 100})` }}
+                                viewport={{ once: true, amount: 1 }}
+                                transition={{ duration: 1.2, delay: 0.2, ease }}
+                                className="h-full origin-left bg-secondary"
+                            />
+                        </div>
+                    </div>
+                </div>
+
                 <section id="renders" aria-labelledby="renders-titulo" className="scroll-mt-20 pt-12 pb-10 lg:pt-14 lg:pb-12">
                     <div className="px-6 lg:px-10">
                         <div className="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-end md:justify-between">
@@ -100,6 +145,20 @@ export default function CasaSinai() {
                     </div>
 
                     <ProjectGallery images={renders} />
+                </section>
+
+                <section id="terracerias" aria-labelledby="terracerias-titulo" className="scroll-mt-20 pt-6 pb-10 lg:pt-8 lg:pb-12">
+                    <div className="px-6 lg:px-10">
+                        <div className="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                            <h2 id="terracerias-titulo" className="font-display text-5xl font-bold uppercase leading-none text-primary sm:text-6xl">Terracerías</h2>
+                            <p className="hidden items-center gap-2 font-body text-xs uppercase tracking-[0.18em] text-primary/60 lg:flex">
+                                Desliza para explorar
+                                <ArrowRightIcon size={16} weight="light" aria-hidden="true" />
+                            </p>
+                        </div>
+                    </div>
+
+                    <ProjectGallery images={terracerias} />
                 </section>
 
                 <section id="planos" aria-labelledby="planos-titulo" className="scroll-mt-18 bg-primary px-6 py-12 text-accent lg:scroll-mt-19 lg:px-10 lg:py-14">

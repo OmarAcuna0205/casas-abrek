@@ -14,6 +14,8 @@ export type GalleryImage = {
     mobileOnly?: boolean;
     // para igualarla a las demas; si no, se usa la proporcion de la foto
     ratio?: number;
+    // que parte de la foto se ve cuando el ratio la recorta, ej. "center 70%"
+    position?: string;
 };
 
 // en desktop van en fila: las que se ven entran juntas y escalonadas al llegar
@@ -54,6 +56,7 @@ function GalleryCard({
                 fill
                 placeholder="blur"
                 sizes="(min-width: 1024px) min(70vw, 58rem), 100vw"
+                style={{ objectPosition: item.position }}
                 className="object-cover"
             />
         </motion.li>
