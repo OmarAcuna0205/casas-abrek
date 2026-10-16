@@ -1,11 +1,54 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { preconnect } from "react-dom";
 import { motion } from "motion/react";
 import { videos, reelEmbedUrl, reelUrl } from "@/data/videos";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
+function ReelEmbed({ id, title }: { id: string; title: string }) {
+    // el src va hasta que monta: asi el SiteLoader ya esta escuchando su load.
+    // Sin lazy, en movil empezaban a cargar hasta llegar con el scroll
+    const frame = useRef<HTMLIFrameElement>(null);
+    const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        frame.current?.setAttribute("src", reelEmbedUrl(id));
+    }, [id]);
+
+    return (
+        <div className="relative aspect-9/17 overflow-hidden bg-primary">
+            {/* mientras Instagram termina de cargar */}
+            <div
+                aria-hidden
+                className={`absolute inset-0 flex items-center justify-center transition-opacity duration-500 ${
+                    loaded ? "opacity-0" : "opacity-100"
+                }`}
+            >
+                <span className="size-8 animate-spin rounded-full border-2 border-accent/20 border-t-secondary" />
+            </div>
+
+            <iframe
+                ref={frame}
+                data-site-loader
+                title={title}
+                scrolling="no"
+                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                allowFullScreen
+                onLoad={(e) => e.currentTarget.src && setLoaded(true)}
+                className={`absolute inset-0 h-full w-full transition-opacity duration-500 ${
+                    loaded ? "opacity-100" : "opacity-0"
+                }`}
+            />
+        </div>
+    );
+}
+
 export default function Videos() {
+    // abre la conexion a Instagram desde el HTML, antes de que monten los iframes
+    preconnect("https://www.instagram.com");
+
     return (
         <section
             id="videos"
@@ -57,17 +100,7 @@ export default function Videos() {
 
                             {/* el embed de Instagram no es 9:16: encima del video
                                 lleva el encabezado y debajo likes y comentarios */}
-                            <div className="relative aspect-9/17 overflow-hidden bg-primary">
-                                <iframe
-                                    src={reelEmbedUrl(video.id)}
-                                    title={video.title}
-                                    loading="lazy"
-                                    scrolling="no"
-                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                                    allowFullScreen
-                                    className="absolute inset-0 h-full w-full"
-                                />
-                            </div>
+                            <ReelEmbed id={video.id} title={video.title} />
                         </motion.li>
                     ))}
                 </ul>

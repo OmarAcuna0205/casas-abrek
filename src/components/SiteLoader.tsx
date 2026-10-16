@@ -35,7 +35,12 @@ export function SiteLoaderProvider({ children }: { children: ReactNode }) {
         const images = Array.from(document.images).filter(
             (img) => img.loading !== "lazy"
         );
-        const total = images.length + 1; // + las fuentes
+        // iframes marcados para esperarlos (reels de Instagram). Les ponen el src
+        // en su propio efecto, en este mismo commit, asi su load no se nos escapa
+        const frames = Array.from(
+            document.querySelectorAll<HTMLIFrameElement>("iframe[data-site-loader]")
+        );
+        const total = images.length + frames.length + 1; // + las fuentes
         let loaded = 0;
 
         const tick = () => {
@@ -50,6 +55,11 @@ export function SiteLoaderProvider({ children }: { children: ReactNode }) {
             }
             img.addEventListener("load", tick, { once: true });
             img.addEventListener("error", tick, { once: true });
+        });
+
+        frames.forEach((frame) => {
+            frame.addEventListener("load", tick, { once: true });
+            frame.addEventListener("error", tick, { once: true });
         });
 
         document.fonts.ready.then(tick);
