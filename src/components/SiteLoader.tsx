@@ -8,12 +8,14 @@ import {
     type ReactNode,
 } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
 
 const ease = [0.25, 1, 0.35, 1] as const;
 
 // nunca se queda mas de esto aunque algo no termine de cargar
 const MAX_WAIT = 4000;
+const MAX_PROJECT_WAIT = 8000;
 // para que no parpadee cuando todo ya estaba en cache
 const MIN_SHOW = 700;
 
@@ -25,15 +27,28 @@ export function useSiteReady() {
 }
 
 export function SiteLoaderProvider({ children }: { children: ReactNode }) {
+    const pathname = usePathname();
+    const waitForProjectImages = pathname === "/casa-sinai";
+    const [previousPath, setPreviousPath] = useState(pathname);
     const [progress, setProgress] = useState(0);
     const [ready, setReady] = useState(false);
 
+    if (pathname !== previousPath) {
+        setPreviousPath(pathname);
+        if (waitForProjectImages) {
+            setProgress(0);
+            setReady(false);
+        }
+    }
+
     useEffect(() => {
+        if (ready) return;
+
         const start = performance.now();
-        // solo cuentan las imagenes que se cargan de entrada (hero, logos);
-        // las lazy de mas abajo cargarian hasta hacer scroll
-        const images = Array.from(document.images).filter(
-            (img) => img.loading !== "lazy"
+        // En Casa Sinaí se esperan también las fotos fuera de pantalla, pero no
+        // las variantes de galería y planos ocultas por el tamaño de la ventana.
+        const images = Array.from(document.images).filter((img) =>
+            waitForProjectImages ? img.getClientRects().length > 0 : img.loading !== "lazy"
         );
         // iframes marcados para esperarlos (reels de Instagram). Les ponen el src
         // en su propio efecto, en este mismo commit, asi su load no se nos escapa
@@ -42,50 +57,59 @@ export function SiteLoaderProvider({ children }: { children: ReactNode }) {
         );
         const total = images.length + frames.length + 1; // + las fuentes
         let loaded = 0;
+        let finished = false;
+        let minimum: number | undefined;
+        let done: number | undefined;
+        const listeners = new AbortController();
+
+        const finish = () => {
+            if (finished) return;
+            finished = true;
+            setProgress(1);
+            // deja que la barra se vea llena un instante antes de irse
+            done = window.setTimeout(() => setReady(true), 350);
+        };
 
         const tick = () => {
+            if (finished) return;
             loaded += 1;
-            setProgress(Math.min(loaded / total, 1));
-        };
-
-        images.forEach((img) => {
-            if (img.complete) {
-                tick();
+            if (loaded < total) {
+                setProgress(loaded / total);
                 return;
             }
-            img.addEventListener("load", tick, { once: true });
-            img.addEventListener("error", tick, { once: true });
-        });
 
-        frames.forEach((frame) => {
-            frame.addEventListener("load", tick, { once: true });
-            frame.addEventListener("error", tick, { once: true });
-        });
+            minimum = window.setTimeout(finish, Math.max(0, MIN_SHOW - (performance.now() - start)));
+        };
 
-        document.fonts.ready.then(tick);
-
-        const fallback = setTimeout(() => setProgress(1), MAX_WAIT);
-
-        const check = setInterval(() => {
-            if (loaded >= total && performance.now() - start >= MIN_SHOW) {
-                setProgress(1);
+        for (const img of images) {
+            if (waitForProjectImages && img.loading === "lazy") {
+                img.loading = "eager";
             }
-        }, 100);
+            img.decode().then(tick, tick);
+        }
+
+        for (const frame of frames) {
+            const loadedFrame = () => {
+                frame.removeEventListener("load", loadedFrame);
+                frame.removeEventListener("error", loadedFrame);
+                tick();
+            };
+            frame.addEventListener("load", loadedFrame, { signal: listeners.signal });
+            frame.addEventListener("error", loadedFrame, { signal: listeners.signal });
+        }
+
+        document.fonts.ready.then(tick, tick);
+
+        const fallback = window.setTimeout(finish, waitForProjectImages ? MAX_PROJECT_WAIT : MAX_WAIT);
 
         return () => {
-            clearTimeout(fallback);
-            clearInterval(check);
+            finished = true;
+            listeners.abort();
+            window.clearTimeout(minimum);
+            window.clearTimeout(done);
+            window.clearTimeout(fallback);
         };
-    }, []);
-
-    useEffect(() => {
-        if (progress < 1) {
-            return;
-        }
-        // deja que la barra se vea llena un instante antes de irse
-        const done = setTimeout(() => setReady(true), 350);
-        return () => clearTimeout(done);
-    }, [progress]);
+    }, [pathname, ready, waitForProjectImages]);
 
     useEffect(() => {
         document.documentElement.style.overflow = ready ? "" : "hidden";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import Image, { type StaticImageData } from "next/image";
+import Image, { type ImageProps, type StaticImageData } from "next/image";
 import { motion, useInView } from "motion/react";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 
@@ -12,9 +12,7 @@ export type GalleryImage = {
     alt: string;
     // la foto del hero: en movil el hero la recorta, aqui se ve completa
     mobileOnly?: boolean;
-    // para igualarla a las demas; si no, se usa la proporcion de la foto
-    ratio?: number;
-    // que parte de la foto se ve cuando el ratio la recorta, ej. "center 70%"
+    // qué parte de la foto se ve cuando la galería la recorta, ej. "center 70%"
     position?: string;
 };
 
@@ -24,11 +22,15 @@ export type GalleryImage = {
 // transform y no y para que la animacion vaya por GPU y no trabe el scroll
 function GalleryCard({
     item,
+    aspectRatio,
+    placeholder,
     index,
     isDesktop,
     listInView,
 }: {
     item: GalleryImage;
+    aspectRatio?: number;
+    placeholder: ImageProps["placeholder"];
     index: number;
     isDesktop: boolean;
     listInView: boolean;
@@ -37,9 +39,8 @@ function GalleryCard({
     const inView = useInView(ref, { once: true, amount: 0.2 });
     const show = isDesktop ? listInView : inView;
 
-    // cada foto con su proporcion: las verticales no se recortan y en desktop
-    // todas miden lo mismo de alto
-    const ratio = item.ratio ?? item.image.width / item.image.height;
+    const ratio = aspectRatio ?? item.image.width / item.image.height;
+    const desktopWidth = `min(calc(100vw - 5rem), calc((100dvh - 15rem) * ${ratio}))`;
 
     return (
         <motion.li
@@ -47,15 +48,15 @@ function GalleryCard({
             initial={{ opacity: 0, transform: "translateY(24px)" }}
             animate={show ? { opacity: 1, transform: "translateY(0px)" } : undefined}
             transition={{ duration: 0.7, delay: isDesktop ? index * 0.08 : 0, ease }}
-            style={{ "--ratio": ratio } as React.CSSProperties}
-            className={`relative aspect-(--ratio) shrink-0 overflow-hidden lg:w-[min(calc(100vw-5rem),calc((100dvh-15rem)*var(--ratio)))] ${item.mobileOnly ? "lg:hidden" : ""}`}
+            style={{ "--ratio": ratio, "--gallery-card-width": desktopWidth } as React.CSSProperties}
+            className={`relative aspect-(--ratio) shrink-0 overflow-hidden lg:w-(--gallery-card-width) ${item.mobileOnly ? "lg:hidden" : ""}`}
         >
             <Image
                 src={item.image}
                 alt={item.alt}
                 fill
-                placeholder="blur"
-                sizes="(min-width: 1024px) min(70vw, 58rem), 100vw"
+                placeholder={placeholder}
+                sizes={`(min-width: 1024px) ${desktopWidth}, calc(100vw - 3rem)`}
                 style={{ objectPosition: item.position }}
                 className="object-cover"
             />
@@ -69,7 +70,11 @@ function GalleryCard({
 // overflow-y-hidden: con overflow-x-auto el navegador tambien deja scroll en Y, y
 // como las fotos entran desde 24px abajo, la fila se quedaba con el scroll vertical
 // y la pagina se sentia trabada. Asi el scroll vertical siempre pasa a la pagina
-export default function ProjectGallery({ images }: { images: GalleryImage[] }) {
+export default function ProjectGallery({ images, aspectRatio, placeholder = "blur" }: {
+    images: GalleryImage[];
+    aspectRatio?: number;
+    placeholder?: ImageProps["placeholder"];
+}) {
     const isDesktop = useMediaQuery("(min-width: 1024px)");
     const listRef = useRef<HTMLUListElement>(null);
     const listInView = useInView(listRef, { once: true, amount: 0.12 });
@@ -83,6 +88,8 @@ export default function ProjectGallery({ images }: { images: GalleryImage[] }) {
                 <GalleryCard
                     key={item.image.src}
                     item={item}
+                    aspectRatio={aspectRatio}
+                    placeholder={placeholder}
                     index={index}
                     isDesktop={isDesktop}
                     listInView={listInView}

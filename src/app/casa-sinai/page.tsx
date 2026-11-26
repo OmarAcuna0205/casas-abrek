@@ -21,16 +21,29 @@ import terraceriasOne from "../../../public/terracerias1.jpg";
 import terraceriasTwo from "../../../public/terracerias2.jpg";
 import terraceriasThree from "../../../public/terracerias3.jpg";
 import terraceriasFour from "../../../public/terracerias4.jpg";
+import equipoFrente from "../../../public/casa-sinai/equipo-frente.jpg";
+import equipoSelfie from "../../../public/casa-sinai/equipo-selfie.jpg";
+import equipoEspaldas from "../../../public/casa-sinai/equipo-espaldas.jpg";
+import equipoEnObra from "../../../public/casa-sinai/equipo-en-obra.jpg";
+import murosOne from "../../../public/casa-sinai/muros-1.jpg";
+import murosTwo from "../../../public/casa-sinai/muros-2.jpg";
+import murosThree from "../../../public/casa-sinai/muros-3.jpg";
+import murosFour from "../../../public/casa-sinai/muros-4.jpg";
 
 const ease = [0.25, 1, 0.35, 1] as const;
+
+const equipo: GalleryImage[] = [
+    { image: equipoFrente, alt: "Equipo de Abrek de frente en la obra de Casa Sinaí", position: "center 85%" },
+    { image: equipoSelfie, alt: "Selfie del equipo de Abrek en la obra de Casa Sinaí" },
+    { image: equipoEspaldas, alt: "Equipo de Abrek de espaldas con el logotipo en sus camisetas", position: "center 70%" },
+    { image: equipoEnObra, alt: "Integrante del equipo de Abrek trabajando junto a un muro", position: "center 70%" },
+];
 
 const renders: GalleryImage[] = [
     {
         image: sinaiImage,
         alt: "Fachada principal de Casa Sinaí",
         mobileOnly: true,
-        // la foto es panoramica; en 4:3 queda del tamaño de los renders
-        ratio: 4 / 3,
     },
     { image: renderOne, alt: "Render exterior de Casa Sinaí" },
     { image: renderTwo, alt: "Render de la fachada de Casa Sinaí" },
@@ -40,18 +53,22 @@ const renders: GalleryImage[] = [
     { image: renderSix, alt: "Render nocturno de Casa Sinaí" },
 ];
 
-// fotos de obra: son verticales y se recortan a 4:3 para que midan lo mismo que
-// los renders. position elige que parte de la foto queda a la vista
 const terracerias: GalleryImage[] = [
-    { image: terraceriasOne, alt: "Excavación de la cimentación de Casa Sinaí", ratio: 4 / 3, position: "center 70%" },
-    { image: terraceriasThree, alt: "Retroexcavadora abriendo el terreno de Casa Sinaí", ratio: 4 / 3, position: "center 40%" },
-    { image: terraceriasTwo, alt: "Trabajadores excavando la cimentación de Casa Sinaí", ratio: 4 / 3, position: "center 95%" },
-    { image: terraceriasFour, alt: "Planta de cimentación de Casa Sinaí frente a la excavación en obra", ratio: 4 / 3 },
+    { image: terraceriasOne, alt: "Excavación de la cimentación de Casa Sinaí", position: "center 70%" },
+    { image: terraceriasThree, alt: "Retroexcavadora abriendo el terreno de Casa Sinaí", position: "center 40%" },
+    { image: terraceriasTwo, alt: "Trabajadores excavando la cimentación de Casa Sinaí", position: "center 95%" },
+    { image: terraceriasFour, alt: "Planta de cimentación de Casa Sinaí frente a la excavación en obra" },
+];
+
+const muros: GalleryImage[] = [
+    { image: murosTwo, alt: "Vista general del levantamiento de muros en Casa Sinaí" },
+    { image: murosThree, alt: "Muro lateral de block en construcción en Casa Sinaí" },
+    { image: murosFour, alt: "Muros interiores de ladrillo en construcción en Casa Sinaí" },
+    { image: murosOne, alt: "Muros de block y ladrillo junto a los castillos de Casa Sinaí" },
 ];
 
 // avance general de la obra, de 0 a 100. Se actualiza a mano conforme avance.
-// PENDIENTE: confirmar el porcentaje real con Josué
-const avanceObra = 10;
+const avanceObra = 30;
 
 // ancho entre alto de cada plano: el de movil es vertical y el de desktop horizontal
 const planoRatio = planoImage.width / planoImage.height;
@@ -62,6 +79,31 @@ const details = [
     { label: "Estatus", value: "Preventa" },
     { label: "Tipología", value: "Casa de una planta" },
 ];
+
+function GallerySection({ id, title, images, className }: {
+    id: string;
+    title: string;
+    images: GalleryImage[];
+    className: string;
+}) {
+    const titleId = `${id}-titulo`;
+
+    return (
+        <section id={id} aria-labelledby={titleId} className={`scroll-mt-20 pb-10 lg:pb-12 ${className}`}>
+            <div className="px-6 lg:px-10">
+                <div className="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                    <h2 id={titleId} className="font-display text-5xl font-bold uppercase leading-none text-primary max-[400px]:text-4xl sm:text-6xl">{title}</h2>
+                    <p className="hidden shrink-0 items-center gap-2 font-body text-xs uppercase tracking-[0.18em] text-primary/60 lg:flex">
+                        Desliza para explorar
+                        <ArrowRightIcon size={16} weight="light" aria-hidden="true" />
+                    </p>
+                </div>
+            </div>
+
+            <ProjectGallery images={images} aspectRatio={4 / 3} placeholder="empty" />
+        </section>
+    );
+}
 
 export default function CasaSinai() {
     return (
@@ -105,7 +147,7 @@ export default function CasaSinai() {
                     </div>
                 </section>
 
-                {/* avance general de la obra, antes de los renders para que se vea de entrada.
+                {/* avance general de la obra, antes de las galerías para que se vea de entrada.
                     Misma barra dorada que el quiz */}
                 <div className="px-6 pt-12 lg:px-10 lg:pt-14">
                     <div className="mx-auto max-w-7xl">
@@ -133,33 +175,10 @@ export default function CasaSinai() {
                     </div>
                 </div>
 
-                <section id="renders" aria-labelledby="renders-titulo" className="scroll-mt-20 pt-12 pb-10 lg:pt-14 lg:pb-12">
-                    <div className="px-6 lg:px-10">
-                        <div className="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                            <h2 id="renders-titulo" className="font-display text-5xl font-bold uppercase leading-none text-primary sm:text-6xl">Renders</h2>
-                            <p className="hidden items-center gap-2 font-body text-xs uppercase tracking-[0.18em] text-primary/60 lg:flex">
-                                Desliza para explorar
-                                <ArrowRightIcon size={16} weight="light" aria-hidden="true" />
-                            </p>
-                        </div>
-                    </div>
-
-                    <ProjectGallery images={renders} />
-                </section>
-
-                <section id="terracerias" aria-labelledby="terracerias-titulo" className="scroll-mt-20 pt-6 pb-10 lg:pt-8 lg:pb-12">
-                    <div className="px-6 lg:px-10">
-                        <div className="mx-auto flex max-w-7xl flex-col gap-3 md:flex-row md:items-end md:justify-between">
-                            <h2 id="terracerias-titulo" className="font-display text-5xl font-bold uppercase leading-none text-primary sm:text-6xl">Terracerías</h2>
-                            <p className="hidden items-center gap-2 font-body text-xs uppercase tracking-[0.18em] text-primary/60 lg:flex">
-                                Desliza para explorar
-                                <ArrowRightIcon size={16} weight="light" aria-hidden="true" />
-                            </p>
-                        </div>
-                    </div>
-
-                    <ProjectGallery images={terracerias} />
-                </section>
+                <GallerySection id="renders" title="Renders" images={renders} className="pt-12 lg:pt-14" />
+                <GallerySection id="equipo" title="Equipo" images={equipo} className="pt-6 lg:pt-8" />
+                <GallerySection id="terracerias" title="Terracerías" images={terracerias} className="pt-6 lg:pt-8" />
+                <GallerySection id="levantamiento-de-muros" title="Levantamiento de muros" images={muros} className="pt-6 lg:pt-8" />
 
                 <section id="planos" aria-labelledby="planos-titulo" className="scroll-mt-18 bg-primary px-6 py-12 text-accent lg:scroll-mt-19 lg:px-10 lg:py-14">
                     <div className="mx-auto max-w-7xl">
